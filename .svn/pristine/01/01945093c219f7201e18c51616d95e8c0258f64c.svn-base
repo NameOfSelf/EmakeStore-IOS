@@ -1,0 +1,141 @@
+//
+//  APIManager.swift
+//  MySwiftTest
+//
+//  Created by 谷伟 on 2017/10/22.
+//  Copyright © 2017年 谷伟. All rights reserved.
+//
+
+import Foundation
+import Moya
+
+private func endpointMapping<Target : TargetType>(target : Target) ->Endpoint<Target>{
+    
+    print("请求连接：\(target.baseURL)\(target.path) \n方法：\(target.method)\n参数：\(String(describing: target.task)) ")
+    return MoyaProvider.defaultEndpointMapping(for: target)
+}
+
+enum APIManager {
+    case refreshToken(parameter:NSDictionary)
+    case getVerifyCode(parameter:NSDictionary)
+    case register(parameter:NSDictionary)
+    case login(parameter:NSDictionary)
+    case getStoreInfo()
+    case getVipUsers(parameter:NSDictionary)
+    case getTransactionUsers(parameter:NSDictionary)
+    case getTransactionOrders(parameter:NSDictionary)
+    case getAutoReplyInfo(parameter:NSDictionary)
+    case passwordForget(parameter:NSDictionary)
+    case getOrderList(parameter:NSDictionary)
+    case getShippingDetail(parameter:NSDictionary)
+}
+extension APIManager: TargetType{
+    
+    var headers: [String : String]? {
+        return nil
+    }
+    var baseURL : URL{
+        return URL(string: EmakeHost)!
+    }
+    var path : String{
+        switch self {
+        case .getVerifyCode(_):
+            return EmakeAPI_StoreSendVerificationCode
+        case .register:
+            return EmakeAPI_StoreRegist
+        case .login(_):
+            return EmakeAPI_StoreLogin
+        case .getVipUsers(_):
+            return EmakeAPI_AppVipUsers
+        case .getTransactionUsers(_):
+            return EmakeAPI_AppTransactionUsers
+        case .getStoreInfo(_):
+            return EmakeAPI_AppMyStore
+        case .getTransactionOrders(_):
+            return EmakeAPI_AppTransactionOrders
+        case .getAutoReplyInfo(_):
+            return EmakeAPI_WebAutoReply
+        case .passwordForget(_):
+            return EmakeAPI_UserPasswordForget
+        case .refreshToken(_):
+            return EmakeAPI_AccessToken
+        case .getOrderList(_):
+            return EmakeAPI_AppCustomerMakeOrder
+        case .getShippingDetail(_):
+            return EmakeAPI_AppMakeShippingDetail
+        }
+    }
+
+    var method : Moya.Method{
+        switch self {
+        case .getVerifyCode(_):
+            return .post
+        case .register(_):
+            return .post
+        case .login(_):
+            return .post
+        case .getVipUsers(_):
+            return .get
+        case .getTransactionUsers(_):
+            return .get
+        case .getStoreInfo(_):
+            return .get
+        case .getTransactionOrders(_):
+            return .get
+        case .getAutoReplyInfo(_):
+            return .get
+        case .passwordForget(_):
+            return .post
+        case .refreshToken(_):
+            return .get
+        case .getOrderList(_):
+            return .get
+        case .getShippingDetail(_):
+            return .get
+        }
+        
+    }
+    
+    var sampleData: Data {
+        return "".data(using: String.Encoding.utf8)!
+    }
+    //⚠️注意区别：Get/Post、Put/无参
+    var task : Task{
+        var params: [String: Any] = [:]
+        switch self {
+        case .getVerifyCode(let param):
+            params = param as! [String : Any]
+        case .register(let param):
+            params = param as! [String : Any]
+        case .login(let param):
+            params = param as! [String : Any]
+        case .passwordForget(let param):
+            params = param as! [String : Any]
+        case .getVipUsers(let param):
+            params = param as! [String : Any]
+            return .requestCompositeData(bodyData: "".data(using: String.Encoding.utf8)!, urlParameters: params)
+        case .getTransactionUsers(let param):
+            params = param as! [String : Any]
+            return .requestCompositeData(bodyData: "".data(using: String.Encoding.utf8)!, urlParameters: params)
+        case .getTransactionOrders(let param):
+            params = param as! [String : Any]
+            return .requestCompositeData(bodyData: "".data(using: String.Encoding.utf8)!, urlParameters: params)
+        case .getAutoReplyInfo(let param):
+            params = param as! [String : Any]
+            return .requestCompositeData(bodyData: "".data(using: String.Encoding.utf8)!, urlParameters: params)
+        case .refreshToken(let param):
+            params = param as! [String : Any]
+            return .requestCompositeData(bodyData: "".data(using: String.Encoding.utf8)!, urlParameters: params)
+        case .getOrderList(let param):
+            params = param as! [String : Any]
+            return .requestCompositeData(bodyData: "".data(using: String.Encoding.utf8)!, urlParameters: params)
+        case .getShippingDetail(let param):
+            params = param as! [String : Any]
+            return .requestCompositeData(bodyData: "".data(using: String.Encoding.utf8)!, urlParameters: params)
+        default:
+            return .requestPlain
+        }
+        return .requestParameters(parameters: params , encoding: JSONEncoding.default)
+    }
+}
+		

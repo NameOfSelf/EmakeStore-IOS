@@ -1,0 +1,45 @@
+//
+//  CommandModel.swift
+//  EmakeSwift
+//
+//  Created by 谷伟 on 2018/8/30.
+//  Copyright © 2018年 谷伟. All rights reserved.
+//
+
+import UIKit
+import ObjectMapper
+
+enum commandType: String {
+    case UserRequestService = "UserRequestService"
+    case RequestSwitchService = "RequestSwitchService"
+    case StoreRequestService = "StoreRequestService"
+    case UserMessageList = "UserMessageList"
+    case MessageList = "MessageList"
+    case CustomerList = "CustomerList"
+}
+
+class CommandModel: Mappable {
+    var cmd : String?
+    var user_id : String?
+    var message_id_last : String?
+    var customer_id : String?
+    var customer_ids : Array<Any>?
+    var message_last : String?
+    var user_info : String?
+    var chatroom_id : String?
+    required init?(map: Map) {
+        
+    }
+    
+    func mapping(map: Map) {
+        cmd <- map["cmd"]
+        user_id <- map["user_id"]
+        message_id_last <- map["message_id_last"]
+        customer_id <- map["customer_id"]
+        customer_ids <- map["customer_ids"]
+        message_last <- map["message_last"]
+        user_info <- map["user_info"]
+        chatroom_id <- map["chatroom_id"]
+    }
+    
+}

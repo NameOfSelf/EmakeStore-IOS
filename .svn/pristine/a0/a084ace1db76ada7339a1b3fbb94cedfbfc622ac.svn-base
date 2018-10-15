@@ -1,0 +1,26 @@
+platform :ios, '10.0'
+use_frameworks!
+
+target 'EmakeSwift' do
+    pod 'CYLTabBarController'
+    pod 'ObjectMapper', '~> 3.1'
+    pod 'Alamofire', '~> 4.5'
+    pod 'Moya/RxSwift', '~> 10.0'
+    pod 'SnapKit', '~> 4.0.0'
+    pod 'MBProgressHUD'
+    pod 'MJRefresh'
+    pod 'SDWebImage', '~> 4.0'
+    pod 'Toast'
+    pod 'IQKeyboardManagerSwift'
+    pod 'RealmSwift'
+    pod 'MQTTClient'
+    pod 'SVGKit', :git => 'https://github.com/SVGKit/SVGKit.git', :branch => '2.x'
+    pod 'AliyunOSSiOS'
+    pod 'ReachabilitySwift'
+    pod 'YBPopupMenu', '~> 1.1.2'
+    pod 'TZImagePickerController'
+    pod 'RxCocoa', '~> 4.1.1'
+    pod 'RSKPlaceholderTextView'
+    pod 'ObjectMapper+Realm'
+    pod 'HTHorizontalSelectionList', '~> 0.7.4'
+end

@@ -1,0 +1,136 @@
+//
+//  STOrderDetailViewController.swift
+//  EmakeSwift
+//
+//  Created by 谷伟 on 2018/9/12.
+//  Copyright © 2018年 谷伟. All rights reserved.
+//
+
+import UIKit
+
+class STOrderDetailViewController: BaseViewController {
+    var table : UITableView?
+    static let OrderDetailTopCell = "OrderDetailTopCell"
+    static let OrderDetailItemCell = "OrderDetailItemCell"
+    static let OrderDetailUserCell = "OrderDetailUserCell"
+    static let OrderDetailBottomCell = "OrderDetailBottomCell"
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.title = "订单详情"
+        self.baseSetNavLeftButtonIsBack()
+        // Do any additional setup after loading the view.
+    }
+
+    override func configSubviews() {
+        
+        self.table = UITableView(frame: .zero, style: .grouped)
+        self.table?.delegate = self
+        self.table?.dataSource = self
+        self.table?.separatorStyle = .none
+        self.table?.estimatedSectionFooterHeight = TableViewFooterNone
+        self.table?.estimatedSectionHeaderHeight = TableViewHeaderNone
+        self.table?.backgroundColor = .clear
+        self.table?.headerRefresh(block: {
+            self.table?.mj_header.endRefreshing()
+        })
+        self.table?.footerRefresh(block: {
+            self.table?.mj_footer.endRefreshing()
+        })
+        self.view.addSubview(self.table!)
+    }
+    
+    override func snapSubviews() {
+        
+        self.table?.snp.makeConstraints({ (make) in
+            make.left.right.bottom.equalTo(0)
+            make.top.equalTo(0)
+        })
+    }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+}
+extension STOrderDetailViewController : UITableViewDelegate,UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        
+        return 4
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return 1
+        case 1:
+            return 4
+        case 2:
+            return 2
+        default:
+            return 1
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        switch indexPath.section {
+        case 0:
+            let cell = STOrderDetailTopCell.init(style: .default, reuseIdentifier: STOrderDetailViewController.OrderDetailTopCell, orderType: .待付款)
+            cell.selectionStyle = .none
+            return cell
+        case 1:
+            let cell = STOrderDetailItemCell.init(style: .default, reuseIdentifier: STOrderDetailViewController.OrderDetailItemCell)
+            cell.selectionStyle = .none
+            cell.backgroundColor = .white
+            return cell
+        case 2:
+            let cell = STOrderDetailUserCell.init(style: .default, reuseIdentifier: STOrderDetailViewController.OrderDetailUserCell)
+            cell.selectionStyle = .none
+            cell.backgroundColor = .white
+            return cell
+        default:
+            let cell = STOrderDetailBottomCell.init(style: .default, reuseIdentifier: STOrderDetailViewController.OrderDetailBottomCell)
+            cell.selectionStyle = .none
+            cell.backgroundColor = .white
+            return cell
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return TableViewHeaderNone
+        }else {
+            return HeightRate(actureValue: 5)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return TableViewFooterNone
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        switch indexPath.section {
+        case 0:
+            return HeightRate(actureValue: 186)
+        case 1:
+            return HeightRate(actureValue: 93)
+        case 2:
+            return HeightRate(actureValue: 58)
+        default:
+            return HeightRate(actureValue: 54)
+        }
+    }
+}

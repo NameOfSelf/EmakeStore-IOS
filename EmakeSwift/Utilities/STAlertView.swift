@@ -1,0 +1,124 @@
+//
+//  STAlertView.swift
+//  EmakeSwift
+//
+//  Created by 谷伟 on 2018/9/6.
+//  Copyright © 2018年 谷伟. All rights reserved.
+//
+
+import UIKit
+
+class STAlertView: UIView {
+    
+    let shadowView : UIView
+    let leftButton : UIButton
+    let rightButton : UIButton
+    let title : UILabel
+    let contentLabel : UILabel
+    let line : UILabel
+    let lineV : UILabel
+    var delegate : STAlertViewDelegate?
+    
+    init?(frame: CGRect,title:String,message:String,leftTitle:String,rightTitle:String) {
+        
+    
+        self.shadowView = UIView(frame: CGRect(x: 0, y: 0, width: ScreenWidth, height: ScreenHeight))
+        self.shadowView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        
+        self.title = UILabel()
+        self.title.frame = CGRect(x: WidthRate(actureValue: 10), y: WidthRate(actureValue: 25), width: frame.size.width-WidthRate(actureValue: 20), height: WidthRate(actureValue: 15))
+        self.title.textAlignment = .center
+        self.title.text = title;
+        self.title.textColor = .black
+        self.title.font = AdaptFont(actureValue: 18)
+        
+        self.contentLabel = UILabel()
+        self.contentLabel.textAlignment = .center
+        self.contentLabel.frame = CGRect(x: WidthRate(actureValue: 10), y: WidthRate(actureValue: 50), width: frame.size.width-WidthRate(actureValue: 20), height: WidthRate(actureValue: 55))
+        self.contentLabel.text = message;
+        self.contentLabel.numberOfLines = 2;
+        self.contentLabel.textColor = TextColor_999999
+        self.contentLabel.font = AdaptFont(actureValue: 16)
+        
+        self.line = UILabel()
+        line.frame = CGRect(x: 0, y: WidthRate(actureValue: 105), width: frame.size.width, height: 1)
+        line.backgroundColor = BaseColor.SepratorLineColor
+        
+        self.lineV = UILabel()
+        lineV.frame = CGRect(x: frame.size.width/2, y: WidthRate(actureValue: 105), width: 1, height: WidthRate(actureValue: 55))
+        lineV.backgroundColor = BaseColor.SepratorLineColor
+        
+        self.leftButton = UIButton()
+        self.leftButton.setTitle(leftTitle, for: .normal)
+        self.leftButton.setTitleColor(.black, for: .normal)
+        self.leftButton.frame = CGRect(x: 0, y: WidthRate(actureValue: 105), width: frame.size.width/2, height: WidthRate(actureValue: 55))
+        self.leftButton.titleLabel?.font = AdaptFont(actureValue: 18)
+        
+        self.rightButton = UIButton()
+        self.rightButton.frame = CGRect(x: frame.size.width/2, y: WidthRate(actureValue: 105), width: frame.size.width/2, height: WidthRate(actureValue: 55))
+        self.rightButton.setTitle(rightTitle, for: .normal)
+        self.rightButton.setTitleColor(BaseColor.APP_THEME_MAIN_COLOR, for: .normal)
+        self.rightButton.titleLabel?.font = AdaptFont(actureValue: 18)
+    
+        super.init(frame: frame)
+    
+        self.backgroundColor = .white
+        self.layer.cornerRadius = WidthRate(actureValue: 4)
+        self.frame = CGRect(x: 0, y: 0, width: WidthRate(actureValue: 280), height: WidthRate(actureValue: 160))
+        self.center = self.shadowView.center
+        self.addSubview(self.title)
+        self.addSubview(self.line)
+        self.addSubview(self.lineV)
+        self.addSubview(self.contentLabel)
+        self.addSubview(self.leftButton)
+        self.addSubview(self.rightButton)
+        self.leftButton.addTarget(self, action: #selector(leftButtonClick), for: .touchUpInside)
+        self.rightButton.addTarget(self, action: #selector(rightButtonClick), for: .touchUpInside)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.shadowView = UIView()
+        self.leftButton = UIButton()
+        self.rightButton = UIButton()
+        self.title = UILabel()
+        self.contentLabel = UILabel()
+        self.line = UILabel()
+        self.lineV = UILabel()
+        fatalError("init(coder:) has not been implemented")
+
+    }
+    func showAnimated() {
+
+        UIApplication.shared.keyWindow?.addSubview(self.shadowView)
+        self.shadowView.addSubview(self)
+        self.transform = CGAffineTransform(scaleX: CGFloat.leastNormalMagnitude, y: CGFloat.leastNormalMagnitude)
+        UIView.animate(withDuration: 0.3, animations: {
+            self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+        }) { (finished) in
+            
+        }
+    }
+    
+    @objc func leftButtonClick(){
+        self.shadowView.removeFromSuperview()
+        self.delegate?.alertViewLeftButtonClick()
+    }
+    @objc func rightButtonClick(){
+        self.shadowView.removeFromSuperview()
+        self.delegate?.alertViewRightButtonClick()
+    }
+    /*
+    // Only override draw() if you perform custom drawing.
+    // An empty implementation adversely affects performance during animation.
+    override func draw(_ rect: CGRect) {
+        // Drawing code
+    }
+    */
+
+}
+protocol STAlertViewDelegate {
+    
+    func alertViewLeftButtonClick()
+    
+    func alertViewRightButtonClick()
+}

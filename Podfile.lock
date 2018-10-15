@@ -1,0 +1,152 @@
+PODS:
+  - Alamofire (4.6.0)
+  - AliyunOSSiOS (2.9.1)
+  - CocoaLumberjack (3.4.0):
+    - CocoaLumberjack/Default (= 3.4.0)
+    - CocoaLumberjack/Extensions (= 3.4.0)
+  - CocoaLumberjack/Default (3.4.0)
+  - CocoaLumberjack/Extensions (3.4.0):
+    - CocoaLumberjack/Default
+  - CYLTabBarController (1.17.6)
+  - HTHorizontalSelectionList (0.7.4):
+    - M13BadgeView (~> 1.0.4)
+  - IQKeyboardManagerSwift (5.0.7)
+  - M13BadgeView (1.0.4)
+  - MBProgressHUD (1.1.0)
+  - MJRefresh (3.1.15.3)
+  - Moya/Core (10.0.1):
+    - Alamofire (~> 4.1)
+    - Result (~> 3.0)
+  - Moya/RxSwift (10.0.1):
+    - Moya/Core
+    - RxSwift (~> 4.0)
+  - MQTTClient (0.10.2):
+    - MQTTClient/Core (= 0.10.2)
+  - MQTTClient/Core (0.10.2):
+    - MQTTClient/Manager
+    - MQTTClient/Min
+  - MQTTClient/Manager (0.10.2):
+    - MQTTClient/Min
+  - MQTTClient/Min (0.10.2)
+  - ObjectMapper (3.1.0)
+  - "ObjectMapper+Realm (0.5)":
+    - ObjectMapper
+    - RealmSwift
+  - ReachabilitySwift (4.1.0)
+  - Realm (3.1.0):
+    - Realm/Headers (= 3.1.0)
+  - Realm/Headers (3.1.0)
+  - RealmSwift (3.1.0):
+    - Realm (= 3.1.0)
+  - Result (3.2.4)
+  - RSKPlaceholderTextView (3.0.0)
+  - RxCocoa (4.1.1):
+    - RxSwift (~> 4.0)
+  - RxSwift (4.1.1)
+  - SDWebImage (4.2.3):
+    - SDWebImage/Core (= 4.2.3)
+  - SDWebImage/Core (4.2.3)
+  - SKFPicPreview (1.2.1):
+    - SDWebImage
+  - SnapKit (4.0.0)
+  - SVGKit (2.0.1):
+    - CocoaLumberjack (~> 3.x)
+  - Toast (4.0.0)
+  - TZImagePickerController (2.0.0.1)
+  - YBPopupMenu (1.1.2)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.5)
+  - AliyunOSSiOS
+  - CYLTabBarController
+  - HTHorizontalSelectionList (~> 0.7.4)
+  - IQKeyboardManagerSwift
+  - MBProgressHUD
+  - MJRefresh
+  - Moya/RxSwift (~> 10.0)
+  - MQTTClient
+  - ObjectMapper (~> 3.1)
+  - "ObjectMapper+Realm"
+  - ReachabilitySwift
+  - RealmSwift
+  - RSKPlaceholderTextView
+  - RxCocoa (~> 4.1.1)
+  - SDWebImage (~> 4.0)
+  - SKFPicPreview
+  - SnapKit (~> 4.0.0)
+  - SVGKit (from `https://github.com/SVGKit/SVGKit.git`, branch `2.x`)
+  - Toast
+  - TZImagePickerController
+  - YBPopupMenu (~> 1.1.2)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - AliyunOSSiOS
+    - CocoaLumberjack
+    - CYLTabBarController
+    - HTHorizontalSelectionList
+    - IQKeyboardManagerSwift
+    - M13BadgeView
+    - MBProgressHUD
+    - MJRefresh
+    - Moya
+    - MQTTClient
+    - ObjectMapper
+    - "ObjectMapper+Realm"
+    - ReachabilitySwift
+    - Realm
+    - RealmSwift
+    - Result
+    - RSKPlaceholderTextView
+    - RxCocoa
+    - RxSwift
+    - SDWebImage
+    - SKFPicPreview
+    - SnapKit
+    - Toast
+    - TZImagePickerController
+    - YBPopupMenu
+
+EXTERNAL SOURCES:
+  SVGKit:
+    :branch: 2.x
+    :git: https://github.com/SVGKit/SVGKit.git
+
+CHECKOUT OPTIONS:
+  SVGKit:
+    :commit: 01dd92bf730bab6fbde3e11ab93629f2e18456be
+    :git: https://github.com/SVGKit/SVGKit.git
+
+SPEC CHECKSUMS:
+  Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
+  AliyunOSSiOS: bd364f7d37e6fa54d7c7cf93d1097b23942317ad
+  CocoaLumberjack: e033a5d8513357af2dd456eb66e202c325c30627
+  CYLTabBarController: c374643dea6dadece8bdff9c70f7387f8ffd7d08
+  HTHorizontalSelectionList: c38792f4bc87f941ab6c07b02a40abf111c68249
+  IQKeyboardManagerSwift: 30fb3a61de1af53a95e02b80fb54ed0a19d5ede5
+  M13BadgeView: 700dd0714fdc837c0cf1c8c004454963ec22441f
+  MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
+  MJRefresh: b48380ae2b927b46c4ef000de9adb8dc748e1df7
+  Moya: 9e621707ff754eeb51ff3ec51a3d54e517c0733a
+  MQTTClient: e8d3d642f28548296511b3af4e2cef12874071ce
+  ObjectMapper: 20505058f54e5c3ca69e1d6de9897d152a5369a6
+  "ObjectMapper+Realm": 3188789fb77c189c7a83cb625333a607eb61a08f
+  ReachabilitySwift: 6849231cd4e06559f3b9ef4a97a0a0f96d41e09f
+  Realm: 09513d7c054678d65cd02ce09871f805b0d758ac
+  RealmSwift: e868fee9b10e5490ad94b6b6ecd9027944da1824
+  Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
+  RSKPlaceholderTextView: 0ce73a19998e236323b3f1f16bf4a4e4a76c2c28
+  RxCocoa: fd0862fd2df95fa55562ad28ffd2522c25eb4a85
+  RxSwift: c6e3b1c7b325c7d121cd4327e9d98b7ed746b570
+  SDWebImage: 791bb72962b3492327ddcac4b1880bd1b5458431
+  SKFPicPreview: e142e5ce79b55e10587455431c7ca6d951e64b8a
+  SnapKit: a42d492c16e80209130a3379f73596c3454b7694
+  SVGKit: 4055d9e809b5db8633755979cfb3b02dc5a8c20d
+  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
+  TZImagePickerController: c0c7651a0b6ce88e6b800aac7d5da61db1962f51
+  YBPopupMenu: 6efb286385d95ba5f97c58b8464ec873645e8764
+
+PODFILE CHECKSUM: 1258895114b5ff2b7a201a22baf1fa163ae66cb3
+
+COCOAPODS: 1.5.3

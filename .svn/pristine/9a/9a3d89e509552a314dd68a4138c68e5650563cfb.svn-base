@@ -1,0 +1,166 @@
+//
+//  MQTTClientDefault.swift
+//  EmakeSwift
+//
+//  Created by 谷伟 on 2018/8/29.
+//  Copyright © 2018年 谷伟. All rights reserved.
+//
+
+import UIKit
+import MQTTClient
+import ObjectMapper
+enum MessageType:String {
+    case message = "Message"
+    case event
+}
+class MQTTClientDefault: NSObject {
+    
+    static let client : MQTTClientDefault = MQTTClientDefault()
+    var transport : MQTTCFSocketTransport?
+    var session : MQTTSession?
+    var connectCount : NSInteger?
+    weak var delegate : MQTTClientDefaultDelegate?
+    var nowCount : NSInteger?
+    let isAutoConnect = true
+    
+    //单例 初始化
+    class func shared() -> MQTTClientDefault {
+        self.client.transport = MQTTCFSocketTransport()
+        self.client.transport?.host = MQTT_IP
+        self.client.transport?.port = UInt32(MQTT_PORT)
+        self.client.session = MQTTSession()
+        self.client.session?.transport = MQTTClientDefault.client.transport
+        self.client.session?.keepAliveInterval = 60
+        self.client.session?.protocolLevel = .version311
+        self.client.session?.cleanSessionFlag = false
+        self.client.session?.delegate =  self.client
+        self.client.connectCount = 1000
+        self.client.nowCount = 0
+        return self.client
+    }
+    
+    //连接
+    public func connectToHost(withServerId:String){
+        self.session?.clientId = MQTT_CMDTopic
+        self.session?.connect(toHost: MQTT_IP, port: UInt32(MQTT_PORT), usingSSL: false, connectHandler: { (error) in
+            if error == nil{
+                self.subcribeTo(topic: MQTT_CMDTopic)
+            }
+        })
+    }
+    
+    //订阅
+    public func subcribeTo(topic:String){
+        self.session?.subscribe(toTopic: topic, at:.exactlyOnce, subscribeHandler: { (error, Qos) in
+            if error == nil{
+                print("订阅成功")
+            }else{
+                print("订阅失败")
+            }
+        })
+    }
+    
+    //取消订阅
+    public func unSubcribeTo(topic:String){
+        self.session?.unsubscribeTopic(topic, unsubscribeHandler: { (error) in
+            if error == nil{
+                print("取消订阅成功")
+            }else{
+                print("取消订阅失败")
+            }
+        })
+    }
+    
+    //发送消息
+    public func sendMessage(withMessage:Dictionary<String, Any>?,topic:String,completeBlock:@escaping (NSError)->()){
+        let data = try! JSONSerialization.data(withJSONObject:withMessage!, options: .prettyPrinted)
+        self.session?.publishData(data, onTopic: topic, retain: false, qos: .exactlyOnce, publishHandler: { (error) in
+            completeBlock(error! as NSError)
+        })
+    }
+    
+    //断开连接
+    public func disConnect(){
+        self.session?.disconnect()
+    }
+}
+    
+extension MQTTClientDefault: MQTTSessionDelegate{
+    
+    //消息接收
+    func newMessage(_ session: MQTTSession!, data: Data!, onTopic topic: String!, qos: MQTTQosLevel, retained: Bool, mid: UInt32) {
+        
+        let payload = try! JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as! Dictionary<String, Any>
+        print("消息------\(payload)")
+        
+        if (payload["MessageType"] != nil) {//普通消息
+            let messageModel = Mapper<MessageModel>().map(JSONObject: payload)
+            //1.数据存储
+            
+            //2.消息弹框推送
+            
+            //3.列表刷新
+            
+            //4.消息回调
+            if messageModel?.MessageType == MessageType.message.rawValue{
+                self.delegate?.messageReceived(messageModel: messageModel!, topic: topic)
+            }
+        }else{//指令消息
+            //1.刷新列表
+            
+            
+            //2.消息回调
+            let commandModel = Mapper<CommandModel>().map(JSONObject: payload)
+            self.delegate?.commandReceived(commandModel: commandModel!, topic: topic)
+        }
+        
+    }
+    
+    
+    func protocolError(_ session: MQTTSession!, error: Error!) {
+        print("消息错误")
+    }
+    
+    func handleEvent(_ session: MQTTSession!, event eventCode: MQTTSessionEvent, error: Error!) {
+        
+        switch eventCode {
+        case .connected:
+            print("MQTT连接状态----connected")
+        case .connectionClosed:
+            print("MQTT连接状态----connection closed")
+        case .connectionError:
+            print("MQTT连接状态----connection error")
+            self.autoConnnect()
+        case .protocolError:
+            print("MQTT连接状态----protocoll error")
+            self.autoConnnect()
+        case .connectionClosedByBroker:
+            print("MQTT连接状态----connection closed by broker")
+            self.autoConnnect()
+        default:
+            print("MQTT连接状态----connection refused")
+        }
+    }
+    
+    //自动重连（一秒）
+    private func autoConnnect() {
+        if self.isAutoConnect {
+            if self.nowCount! <= self.connectCount!{
+                DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                    if UserDefalultClientId != nil{
+                        self.connectToHost(withServerId: UserDefalultClientId as! String)
+                    }
+                }
+            }
+        }
+    }
+}
+
+protocol MQTTClientDefaultDelegate : NSObjectProtocol{
+    
+    func messageReceived(messageModel:MessageModel,topic:String)
+    
+    func commandReceived(commandModel:CommandModel,topic:String)
+    
+}
+

@@ -1,0 +1,158 @@
+//
+//  LoginModel.swift
+//  EmakeSwift
+//
+//  Created by 谷伟 on 2018/4/11.
+//  Copyright © 2018年 谷伟. All rights reserved.
+//
+
+import UIKit
+import ObjectMapper
+class LoginModel: Mappable {
+    var BranchId : String?
+    var access_token : String?
+    var expires_in : String?
+    var userinfo : userInfoModel?
+    var BranchName : String?
+    var refresh_token : String?
+    required init?(map: Map) {
+        
+    }
+    func mapping(map: Map) {
+        BranchId <- map["BranchId"]
+        access_token <- map["access_token"]
+        expires_in <- map["expires_in"]
+        userinfo <- map["userinfo"]
+        BranchName <- map["BranchName"]
+        refresh_token <- map["refresh_token"]
+    }
+}
+class userInfoModel: Mappable {
+    var UserName : String?
+    var MobileNumber : String?
+    var EditWho : String?
+    var EditWhen : String?
+    var UserState : String?
+    var HeadImageUrl : String?
+    var UserId : String?
+    var NickName : String?
+    var RealName : String?
+    var BusinessCategory : String?
+    var StoreId : String?
+    var AddWhen : String?
+    var ServiceID : String?
+    var AddWho : String?
+    var RoleId : String?
+    var Owner : String?
+    var Password : String?
+    var Email : String?
+    required init?(map: Map) {
+        
+    }
+    func mapping(map: Map) {
+        UserName <- map["UserName"]
+        MobileNumber <- map["MobileNumber"]
+        EditWho <- map["EditWho"]
+        EditWhen <- map["EditWhen"]
+        UserState <- map["UserState"]
+        HeadImageUrl <- map["HeadImageUrl"]
+        UserId <- map["UserId"]
+        NickName <- map["NickName"]
+        RealName <- map["RealName"]
+        BusinessCategory <- map["BusinessCategory"]
+        StoreId <- map["StoreId"]
+        AddWhen <- map["AddWhen"]
+        ServiceID <- map["ServiceID"]
+        AddWho <- map["AddWho"]
+        RoleId <- map["RoleId"]
+        Owner <- map["Owner"]
+        Password <- map["Password"]
+        Email <- map["Email"]
+    }
+}
+class StoreModel: Mappable {
+    var AuditUser : String?
+    var AddWhen : String?
+    var StoreSummary : String?
+    var StoreOrders : String?
+    var StoreNum : String?
+    var QuickReply : String?
+    var OnShow : String?
+    var StoreName : String?
+    var EditWhen : String?
+    var StorePictures : String?
+    var RecommendDate : String?
+    var EditWho : String?
+    var StoreInvitationCode : String?
+    var Remark : String?
+    var OpenTime : String?
+    var StoreBusinessCategory : String?
+    var BranchId : String?
+    var ApplyTime : String?
+    var StoreType : String?
+    var StoreState : String?
+    var StorePhoto : String?
+    var StoreCategoryList : [ParentCategoryModel]?
+    var AuditTime : String?
+    var AddWho : String?
+    var FeaturedFirst : String?
+    var StoreId : String?
+    var ReceiveInvitationCode : String?
+    var AutoReply : String?
+    var StoreSales : String?
+    var CategoryBId : String?
+    var CategoryBName : String?
+    required init?(map: Map) {
+        
+    }
+    
+    func mapping(map: Map) {
+        AuditUser <- map["AuditUser"]
+        AddWhen <- map["AddWhen"]
+        StoreSummary <- map["StoreSummary"]
+        StoreOrders <- map["StoreOrders"]
+        StoreNum <- map["StoreNum"]
+        QuickReply <- map["QuickReply"]
+        OnShow <- map["OnShow"]
+        StoreName <- map["StoreName"]
+        EditWhen <- map["EditWhen"]
+        StorePictures <- map["StorePictures"]
+        RecommendDate <- map["RecommendDate"]
+        EditWho <- map["EditWho"]
+        StoreInvitationCode <- map["StoreInvitationCode"]
+        Remark <- map["Remark"]
+        OpenTime <- map["OpenTime"]
+        StoreBusinessCategory <- map["StoreBusinessCategory"]
+        BranchId <- map["BranchId"]
+        ApplyTime <- map["ApplyTime"]
+        StoreType <- map["StoreType"]
+        StoreState <- map["StoreState"]
+        StorePhoto <- map["StorePhoto"]
+        StoreCategoryList <- map["StoreCategoryList"]
+        AuditTime <- map["AuditTime"]
+        AddWho <- map["AddWho"]
+        FeaturedFirst <- map["FeaturedFirst"]
+        StoreId <- map["StoreId"]
+        ReceiveInvitationCode <- map["ReceiveInvitationCode"]
+        AutoReply <- map["AutoReply"]
+        StoreSales <- map["StoreSales"]
+        CategoryBId <- map["CategoryBId"]
+        CategoryBName <- map["CategoryBName"]
+    }
+}
+class ParentCategoryModel: Mappable {
+    var ParentCategoryId : String?
+    var ParentCategoryName : String?
+    var CategoryId : String?
+    var CategoryName : String?
+    required init?(map: Map) {
+        
+    }
+    
+    func mapping(map: Map) {
+        ParentCategoryId <- map["ParentCategoryId"]
+        ParentCategoryName <- map["ParentCategoryName"]
+        CategoryId <- map["CategoryId"]
+        CategoryName <- map["CategoryName"]
+    }
+}

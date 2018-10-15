@@ -1,0 +1,141 @@
+//
+//  CommonConfig.swift
+//  MySwiftTest
+//
+//  Created by 谷伟 on 2017/10/21.
+//  Copyright © 2017年 谷伟. All rights reserved.
+//
+
+import UIKit
+/*
+ 常用
+ */
+let ScreenWidth = UIScreen.main.bounds.width
+let ScreenHeight = UIScreen.main.bounds.height
+
+let TableViewHeaderNone = CGFloat(0.01)
+let TableViewFooterNone = CGFloat(0.01)
+
+let IS_IPHONE_X = (ScreenHeight == 812.0) ? true:false
+let StatusBarHeight =  (IS_IPHONE_X) ? 44.0:20.0
+let NavigationBarHeight =  (IS_IPHONE_X) ? 88.0:64.0
+let TableBarHeight =  (IS_IPHONE_X) ? 83.0:49.0
+
+/*
+ app标识
+ */
+let EmakeStore = "emake_store"
+
+/*
+ 适配宽高和字体大小
+ */
+func WidthRate(actureValue:CGFloat) -> CGFloat{
+    
+    return actureValue/375.0*ScreenWidth
+}
+func HeightRate(actureValue:CGFloat) -> CGFloat{
+    
+    return actureValue/667.0*ScreenHeight
+}
+func AdaptFont(actureValue:CGFloat) -> UIFont{
+    
+    return UIFont.systemFont(ofSize: actureValue/375.0*ScreenWidth)
+}
+func AdaptBoldFont(actureValue:CGFloat) -> UIFont{
+    
+    return UIFont.boldSystemFont(ofSize: actureValue/375.0*ScreenWidth)
+}
+
+/*
+ MQTT
+ */
+let MQTT_IP    = "api.emake.cn"
+//let MQTT_IP    = "git.emake.cn"
+let MQTT_PORT  = 1883
+let MQTT_CMDTopic = "user/" + (UserDefaults.standard.object(forKey:EmakeUserId) as! String)
+
+
+/*
+ 阿里云OSS
+ */
+let ALiYunOSSAccessKey = "LTAIGYyQ8ZKKH72N"
+let ALiYunOSSSecretKey = "PrEtbqO724fBsVSw8spLWtSPpaJclM"
+let ALiYunOSSEndPoint = "oss-cn-shanghai.aliyuncs.com"
+let ALiYunOSSBucketNameImage = "img-emake-cn"
+let ALiYunOSSBucketNameVoice = "voi-emake-cn"
+let ALiYunOSSBucketNameImageObjectKey = "images/"
+let ALiYunOSSBucketNameImageVoiceKey = "mqtt/"
+let ALiYunOSSBucketNameImageFileKey = "files/"
+
+/*
+ 通知
+ */
+let NotificatonOrderState      = "NotificatonOrderState"
+let NotificatonRefreshCartData = "NotificatonRefreshCartData"
+
+/*
+ 用户信息存储字段
+ */
+let EmakeToken = "EmakeToken"
+let EmakeRefreshToken = "EmakeRefreshToken"
+let EmakeHeadImageUrlString = "EmakeHeadImageUrlString"
+let EmakeUserPhoneNumber = "EmakeUserPhoneNumber"
+let EmakeUserRealName = "EmakeUserRealName"
+let EmakeUserNickName = "EmakeUserNickName"
+let EmakeUserPassword = "EmakeUserPassword"
+let EmakeUserBusinessCategory = "EmakeUserBusinessCategory"
+let EmakeUserServiceID = "EmakeUserServiceID"
+let EmakeUserId = "EmakeUserId"
+let EmakeShowPassView = "EmakeShowPassView"
+/*
+ 店铺信息存储字段
+ */
+let EmakeStoreId = "EmakeStoreId"
+let EmakeStoreCategoryBId = "EmakeStoreCategoryBId"
+let EmakeStorePhoto = "EmakeStorePhoto"
+let EmakeStoreName = "EmakeStoreName"
+let EmakeStoreType = "EmakeStoreType"
+let EmakeStoreState = "EmakeStoreState"
+
+/*
+ 用户信息存储字段获取
+ */
+let UserDefalultClientId = UserDefaults.standard.object(forKey: EmakeUserId)
+let UserDefalultToken = UserDefaults.standard.object(forKey: EmakeToken)
+let UserDefalultNickName = UserDefaults.standard.object(forKey: EmakeUserNickName)
+let UserDefalultPhoneNumber = UserDefaults.standard.object(forKey: EmakeUserPhoneNumber)
+let UserDefalultBusinessCategory = UserDefaults.standard.object(forKey: EmakeUserBusinessCategory)
+let UserDefalultServiceID = UserDefaults.standard.object(forKey: EmakeUserServiceID)
+let UserDefalultShowPassView = UserDefaults.standard.object(forKey: EmakeShowPassView)
+/*
+ 店铺信息存储字段获取
+ */
+let UserDefalultStoreId = UserDefaults.standard.object(forKey: EmakeStoreId)
+let UserDefalultStoreCategoryBId = UserDefaults.standard.object(forKey: EmakeStoreCategoryBId)
+let UserDefalultStorePhoto = UserDefaults.standard.object(forKey: EmakeStorePhoto)
+let UserDefalultStoreName = UserDefaults.standard.object(forKey: EmakeStoreName)
+let UserDefalultStoreType = UserDefaults.standard.object(forKey: EmakeStoreType)
+let UserDefalultStoreState = UserDefaults.standard.object(forKey: EmakeStoreState)
+
+
+//存储信息清除
+func UserDefaultClean() {
+    
+    UserDefaults.standard.removeObject(forKey: EmakeToken)
+    UserDefaults.standard.removeObject(forKey: EmakeRefreshToken)
+    UserDefaults.standard.removeObject(forKey: EmakeHeadImageUrlString)
+    UserDefaults.standard.removeObject(forKey: EmakeUserPhoneNumber)
+    UserDefaults.standard.removeObject(forKey: EmakeUserRealName)
+    UserDefaults.standard.removeObject(forKey: EmakeUserNickName)
+    UserDefaults.standard.removeObject(forKey: EmakeUserServiceID)
+    UserDefaults.standard.removeObject(forKey: EmakeUserId)
+    UserDefaults.standard.removeObject(forKey: EmakeShowPassView)
+    
+    
+    UserDefaults.standard.removeObject(forKey: EmakeStoreId)
+    UserDefaults.standard.removeObject(forKey: EmakeStoreCategoryBId)
+    UserDefaults.standard.removeObject(forKey: EmakeStorePhoto)
+    UserDefaults.standard.removeObject(forKey: EmakeStoreName)
+    UserDefaults.standard.removeObject(forKey: EmakeStoreType)
+    UserDefaults.standard.removeObject(forKey: EmakeStoreState)
+}

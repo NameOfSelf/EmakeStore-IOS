@@ -1,0 +1,74 @@
+//
+//  NetWorkConfig.swift
+//  MySwiftTest
+//
+//  Created by 谷伟 on 2017/10/21.
+//  Copyright © 2017年 谷伟. All rights reserved.
+//
+
+import UIKit
+
+//上线
+let Debug = "0"
+
+
+enum WebViewURL : String {
+
+    case InstuctionURL = "https://www.baidu.com"
+}
+
+
+/*
+ 请求回调
+ */
+typealias SuccessResponseBlock = (Any?) ->Void
+
+typealias FailureResponseBlock = (Any?) ->Void
+
+
+/*
+ 网络数据解析层
+ */
+let EmakeResultCode   = "ResultCode"
+let EmakeResultInfo   = "ResultInfo"
+let EmakeResponseData = "Data"
+
+
+/*
+ Emake地址
+ */
+//let EmakeHost = "http://mallapi.emake.cn/"
+let EmakeHost = "http://git.emake.cn:3100/"
+let EmakeHostTest = "http://192.168.0.191:3100/"
+
+
+/*
+ Emake全部接口
+ */
+
+//用户登录
+let EmakeAPI_UserLogin = "user/login"
+//发送验证码(1注册，2忘记密码)
+let EmakeAPI_StoreSendVerificationCode = "store/send/verificationcode"
+//注册
+let EmakeAPI_StoreRegist = "store/regist"
+//登录
+let EmakeAPI_StoreLogin = "store/login"
+//未成交vip用户
+let EmakeAPI_AppVipUsers = "app/vip/users"
+//已成交用户
+let EmakeAPI_AppTransactionUsers = "app/transaction/users"
+//获取店铺信息
+let EmakeAPI_AppMyStore = "app/my/store/"
+//获取某个用户在该商铺的订单
+let EmakeAPI_AppTransactionOrders = "app/transaction/orders"
+//查看自动回复
+let EmakeAPI_WebAutoReply = "web/auto/reply"
+//忘记密码
+let EmakeAPI_UserPasswordForget = "store/password/forget"
+//token刷新
+let EmakeAPI_AccessToken = "access_token"
+//订单列表
+let EmakeAPI_AppCustomerMakeOrder = "app/customer/make/order"
+//物流别表
+let EmakeAPI_AppMakeShippingDetail = "app/make/shipping/detail"

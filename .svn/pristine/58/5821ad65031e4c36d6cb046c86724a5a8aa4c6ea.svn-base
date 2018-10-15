@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EmakeServers.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>arm64</string>
+			</array>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>57DD79588472F11C6B5B18EC38A72CD2931C4AB3</string>
+				<key>dateExpires</key>
+				<string>2019/4/28</string>
+				<key>type</key>
+				<string>iOS Development</string>
+			</dict>
+			<key>embeddedBinaries</key>
+			<array>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>57DD79588472F11C6B5B18EC38A72CD2931C4AB3</string>
+						<key>dateExpires</key>
+						<string>2019/4/28</string>
+						<key>type</key>
+						<string>iOS Development</string>
+					</dict>
+					<key>name</key>
+					<string>CocoaLumberjack.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>6D82CMXLTN</string>
+						<key>name</key>
+						<string>Yi hu wang technology nanjing co. LTD</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>57DD79588472F11C6B5B18EC38A72CD2931C4AB3</string>
+						<key>dateExpires</key>
+						<string>2019/4/28</string>
+						<key>type</key>
+						<string>iOS Development</string>
+					</dict>
+					<key>name</key>
+					<string>MQTTClient.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>6D82CMXLTN</string>
+						<key>name</key>
+						<string>Yi hu wang technology nanjing co. LTD</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>57DD79588472F11C6B5B18EC38A72CD2931C4AB3</string>
+						<key>dateExpires</key>
+						<string>2019/4/28</string>
+						<key>type</key>
+						<string>iOS Development</string>
+					</dict>
+					<key>name</key>
+					<string>Masonry.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>6D82CMXLTN</string>
+						<key>name</key>
+						<string>Yi hu wang technology nanjing co. LTD</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>57DD79588472F11C6B5B18EC38A72CD2931C4AB3</string>
+						<key>dateExpires</key>
+						<string>2019/4/28</string>
+						<key>type</key>
+						<string>iOS Development</string>
+					</dict>
+					<key>name</key>
+					<string>SDWebImage.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>6D82CMXLTN</string>
+						<key>name</key>
+						<string>Yi hu wang technology nanjing co. LTD</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>57DD79588472F11C6B5B18EC38A72CD2931C4AB3</string>
+						<key>dateExpires</key>
+						<string>2019/4/28</string>
+						<key>type</key>
+						<string>iOS Development</string>
+					</dict>
+					<key>name</key>
+					<string>SKFPicPreview.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>6D82CMXLTN</string>
+						<key>name</key>
+						<string>Yi hu wang technology nanjing co. LTD</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>57DD79588472F11C6B5B18EC38A72CD2931C4AB3</string>
+						<key>dateExpires</key>
+						<string>2019/4/28</string>
+						<key>type</key>
+						<string>iOS Development</string>
+					</dict>
+					<key>name</key>
+					<string>SVGKit.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>6D82CMXLTN</string>
+						<key>name</key>
+						<string>Yi hu wang technology nanjing co. LTD</string>
+					</dict>
+				</dict>
+			</array>
+			<key>entitlements</key>
+			<dict>
+				<key>application-identifier</key>
+				<string>6D82CMXLTN.com.cn.emake.EmakeServers</string>
+				<key>aps-environment</key>
+				<string>development</string>
+				<key>com.apple.developer.team-identifier</key>
+				<string>6D82CMXLTN</string>
+				<key>get-task-allow</key>
+				<true/>
+			</dict>
+			<key>name</key>
+			<string>EmakeServers.app</string>
+			<key>profile</key>
+			<dict>
+				<key>UUID</key>
+				<string>eb36c040-c81e-4b6e-9afa-4de8b6b30134</string>
+				<key>name</key>
+				<string>iOS Team Provisioning Profile: com.cn.emake.EmakeServers</string>
+			</dict>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>6D82CMXLTN</string>
+				<key>name</key>
+				<string>Yi hu wang technology nanjing co. LTD</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

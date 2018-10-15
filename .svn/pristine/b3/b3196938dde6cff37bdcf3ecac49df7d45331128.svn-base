@@ -1,0 +1,40 @@
+//
+//  STReplyModel.swift
+//  EmakeSwift
+//
+//  Created by 谷伟 on 2018/9/20.
+//  Copyright © 2018年 谷伟. All rights reserved.
+//
+
+import UIKit
+import ObjectMapper
+class STReplyModel: Mappable {
+    var EditWhen : String?
+    var ReplyContent : String?
+    var MinStart : String?
+    var HourStart : String?
+    var MinEnd : String?
+    var HourEnd : String?
+    var ReplyState : String?
+    var CategoryBId : String?
+    var EditWho : String?
+    var ReplyType : String?
+    required init?(map: Map) {
+        
+    }
+    
+    func mapping(map: Map) {
+        EditWhen <- map["EditWhen"]
+        ReplyContent <- map["ReplyContent"]
+        MinStart <- map["MinStart"]
+        HourStart <- map["HourStart"]
+        MinEnd <- map["MinEnd"]
+        HourEnd <- map["HourEnd"]
+        ReplyState <- map["ReplyState"]
+        CategoryBId <- map["CategoryBId"]
+        EditWho <- map["EditWho"]
+        ReplyType <- map["ReplyType"]
+    }
+    
+
+}

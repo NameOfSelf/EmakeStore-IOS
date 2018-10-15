@@ -1,0 +1,239 @@
+//
+//  STOrderListViewController.swift
+//  EmakeSwift
+//
+//  Created by 谷伟 on 2018/9/5.
+//  Copyright © 2018年 谷伟. All rights reserved.
+//
+
+import UIKit
+import HTHorizontalSelectionList
+import MJRefresh
+class STOrderListViewController: BaseViewController {
+    
+    var selctionList : HTHorizontalSelectionList?
+    let titles = ["全部","待签订","待付款","生产中","生产完成","已发货"]
+    var table : UITableView?
+    var selectIndex : NSInteger? = 0
+    var pageNumber : NSInteger? = 1
+    var isMaxPage : Bool? = false
+    let viewModel = STOrderListViewModel()
+    var orderDataList : [STOrderModel]? = []
+    static let OrderTopCell = "OrderTopCell"
+    static let OrderItemCell = "OrderItemCell"
+    static let OrderBottomCell = "OrderBottomCell"
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.leftBarButtonItem = nil
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.title = "订单"
+        // Do any additional setup after loading the view.
+    }
+
+    override func configSubviews() {
+        
+        self.selctionList = HTHorizontalSelectionList(frame: CGRect(x: 0, y: 0, width: ScreenWidth, height: HeightRate(actureValue: 44)))
+        self.selctionList?.delegate = self
+        self.selctionList?.dataSource = self
+        self.selctionList?.snapToCenter = true
+        self.selctionList?.setTitleColor(.black, for: .normal)
+        self.selctionList?.selectionIndicatorColor = BaseColor.APP_THEME_MAIN_COLOR
+        self.selctionList?.bottomTrimColor = BaseColor.SepratorLineColor
+        self.view.addSubview(self.selctionList!)
+        
+        
+        self.table = UITableView(frame: .zero, style: .grouped)
+        self.table?.delegate = self
+        self.table?.dataSource = self
+        self.table?.separatorStyle = .none
+        self.table?.estimatedSectionFooterHeight = TableViewFooterNone
+        self.table?.estimatedSectionHeaderHeight = TableViewHeaderNone
+        self.table?.backgroundColor = .clear
+        self.table?.headerRefresh(block: {
+            self.tableViewHeaderRefresh(index: self.selectIndex!)
+        })
+        self.table?.mj_header.beginRefreshing()
+        self.table?.footerRefresh(block: {
+            self.tableViewFooterRefresh(index: self.selectIndex!)
+        })
+        self.view.addSubview(self.table!)
+    }
+    
+    override func snapSubviews() {
+        
+        self.selctionList?.snp.makeConstraints({ (make) in
+            make.left.top.right.equalTo(0)
+            make.height.equalTo(HeightRate(actureValue: 44))
+        })
+        
+        self.table?.snp.makeConstraints({ (make) in
+            make.left.right.bottom.equalTo(0)
+            make.top.equalTo((self.selctionList?.snp.bottom)!)
+        })
+    }
+    func tableViewHeaderRefresh(index:NSInteger) {
+        self.selectIndex = index
+        self.pageNumber = 1
+        var RequestType = ""
+        if index == 0{
+            RequestType = "1"
+        }
+        var OrderState = ""
+        switch index {
+        case 1:
+            OrderState = "-2"
+        case 2:
+            OrderState = "0"
+        case 3:
+            OrderState = "1"
+        case 4:
+            OrderState = "2"
+        case 5:
+            OrderState = "3"
+        default:
+            break
+        }
+        self.table?.mj_footer.resetNoMoreData()
+        let parameters: NSDictionary = ["StoreId":EmakeStoreId,"PageIndex":self.pageNumber!,"PageSize":5,"RequestType":RequestType,"userId":EmakeUserId,"OrderState":OrderState]
+        viewModel.getOrderList(self, parameters: parameters, successBlock: { (orderList) in
+            self.orderDataList = orderList as? [STOrderModel]
+            self.table?.mj_header.endRefreshing()
+            self.table?.reloadData()
+        }) { (error) in
+            self.table?.mj_header.endRefreshing()
+        }
+        
+    }
+    
+    func tableViewFooterRefresh(index:NSInteger) {
+        self.pageNumber = self.pageNumber! + 1
+        var RequestType = ""
+        if index == 0{
+            RequestType = "1"
+        }
+        var OrderState = ""
+        switch index {
+        case 1:
+            OrderState = "-2"
+        case 2:
+            OrderState = "0"
+        case 3:
+            OrderState = "1"
+        case 4:
+            OrderState = "2"
+        case 5:
+            OrderState = "3"
+        default:
+            break
+        }
+        if self.isMaxPage! {
+            self.table?.mj_footer.endRefreshingWithNoMoreData()
+            return
+        }
+        let parameters: NSDictionary = ["StoreId":EmakeStoreId,"PageIndex":self.pageNumber!,"PageSize":5,"RequestType":RequestType,"userId":EmakeUserId,"OrderState":OrderState]
+        viewModel.getOrderList(self, parameters: parameters, successBlock: { (orderList) in
+            let orders = orderList as! [STOrderModel]
+            if orders.count < 10{
+                self.isMaxPage = true
+                self.table?.mj_footer.endRefreshingWithNoMoreData()
+            }
+            self.orderDataList?.append(contentsOf: orders)
+            self.table?.reloadData()
+            self.table?.mj_footer.endRefreshing()
+        }) { (error) in
+            self.pageNumber = self.pageNumber! - 1
+            self.table?.mj_footer.endRefreshing()
+        }
+        
+    }
+    
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+}
+extension STOrderListViewController : HTHorizontalSelectionListDelegate,HTHorizontalSelectionListDataSource{
+    
+    func selectionList(_ selectionList: HTHorizontalSelectionList, didSelectButtonWith index: Int) {
+        
+        self.tableViewHeaderRefresh(index: index)
+    }
+    
+    func numberOfItems(in selectionList: HTHorizontalSelectionList) -> Int {
+        
+        return self.titles.count
+    }
+    
+    func selectionList(_ selectionList: HTHorizontalSelectionList, titleForItemWith index: Int) -> String? {
+        return self.titles[index]
+    }
+}
+
+extension STOrderListViewController : UITableViewDelegate,UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        
+        return (self.orderDataList?.count)!
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return 4
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        switch indexPath.row {
+        case 0:
+            let cell = STOrderTopCell.init(style: .default, reuseIdentifier: STOrderListViewController.OrderTopCell)
+            cell.selectionStyle = .none
+            return cell
+        case 3:
+            let cell = STOrderBottomCell.init(style: .default, reuseIdentifier: STOrderListViewController.OrderBottomCell, orderType: .待签订)
+            cell.selectionStyle = .none
+            return cell
+        default:
+            let cell = STOrderItemCell.init(style: .default, reuseIdentifier: STOrderListViewController.OrderItemCell)
+            cell.selectionStyle = .none
+            return cell
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch indexPath.row {
+        case 0:
+            return HeightRate(actureValue: 28)
+        case 3:
+            return HeightRate(actureValue: 111)
+        default:
+            return HeightRate(actureValue: 93)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        
+        return TableViewFooterNone
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let vc = STOrderDetailViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+}
