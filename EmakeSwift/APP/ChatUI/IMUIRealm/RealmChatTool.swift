@@ -70,11 +70,10 @@ extension RealmChatTool {
         }
     }
     
-    public class func updateChatListCount(with clientId:String){
-        let oneList = self.getOneChatListData(with: clientId)
+    public class func updateChatListCount(with message:RealmChatListData){
         let defaultRealm = self.getChatListDB()
         try! defaultRealm.write {
-            oneList.messageCount = "0"
+            defaultRealm.add(message, update: true)
         }
     }
     
@@ -145,5 +144,20 @@ extension RealmChatTool {
         }else{
             successBlock(filterData)
         }
+    }
+    
+    
+    public class func getMessageDataMaxMessageID(chatRoomId:String) -> NSInteger {
+        
+        var maxMessageID = 0
+        let defaultRealm = self.getChatDataDB()
+        let chatDatas = defaultRealm.objects(RealmChatData.self).filter("chatRoomID = %@", chatRoomId)
+        for data in chatDatas {
+            let number = Int(data.messageID!)
+            if number! > maxMessageID {
+                maxMessageID = number!
+            }
+        }
+        return maxMessageID
     }
 }

@@ -9,8 +9,8 @@
 import UIKit
 
 @objc open class IMUITextMessageContentView: UIView, IMUIMessageContentViewProtocol {
-  @objc open static var outGoingTextColor = UIColor(netHex: 0x7587A8)
-  @objc open static var inComingTextColor = UIColor.white
+  @objc open static var outGoingTextColor = UIColor.white
+  @objc open static var inComingTextColor = UIColor.black
   
   @objc open static var outGoingTextFont = UIFont.systemFont(ofSize: 18)
   @objc open static var inComingTextFont = UIFont.systemFont(ofSize: 18)

@@ -124,7 +124,7 @@ public class IMUIVoiceMessageContentView: UIView, IMUIMessageContentViewProtocol
       self.voiceImg.center = CGPoint(x: 20, y: frame.height/2)
       self.voiceDuration.center = CGPoint(x: frame.width - 30, y: frame.height/2)
       voiceDuration.textAlignment = .right
-      voiceDuration.textColor = IMUIVoiceMessageContentView.inComingVoiceDurationColor
+      voiceDuration.textColor = UIColor.black
     }
   }
 }

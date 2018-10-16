@@ -98,10 +98,10 @@ open class IMUIMessageModel: NSObject, IMUIMessageModelProtocol {
   open var resizableBubbleImage: UIImage {
     var bubbleImg: UIImage?
     if isOutGoing {
-      bubbleImg = UIImage.imuiImage(with: "outGoing_bubble")
+      bubbleImg = UIImage.imuiImage(with: "kehuxiaoxikuang")
       bubbleImg = bubbleImg?.resizableImage(withCapInsets: UIEdgeInsetsMake(24, 10, 9, 15), resizingMode: .tile)
     } else {
-      bubbleImg = UIImage.imuiImage(with: "inComing_bubble")
+      bubbleImg = UIImage.imuiImage(with: "kefuxiaoxikuang-1")
       bubbleImg = bubbleImg?.resizableImage(withCapInsets: UIEdgeInsetsMake(24, 15, 9, 10), resizingMode: .tile)
     }
     

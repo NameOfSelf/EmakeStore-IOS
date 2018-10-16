@@ -48,16 +48,25 @@ class OSSClientDefault {
         let request = OSSPutObjectRequest()
         switch type {
         case .image:
+            let volume = Double(uploadData.count)/(1024*1024)
+            if volume > 0.3 {
+                let pressRate =  0.3 / volume
+                let pressImage =  UIImage(data: uploadData)
+                request.uploadingData = UIImageJPEGRepresentation(pressImage!, CGFloat(pressRate))!
+            }
             request.bucketName = ALiYunOSSBucketNameImage
             request.objectKey = ALiYunOSSBucketNameImageObjectKey + fileName
+            
         case .voice:
             request.bucketName = ALiYunOSSBucketNameVoice
             request.objectKey = ALiYunOSSBucketNameImageVoiceKey + fileName
+            request.uploadingData = uploadData
         default:
             request.bucketName = ALiYunOSSBucketNameVoice
             request.objectKey = ALiYunOSSBucketNameImageFileKey + fileName
+            request.uploadingData = uploadData
         }
-        request.uploadingData = uploadData
+        
         print("objectKey: \(request.objectKey)")
         let putTask = tClient?.putObject(request)
         putTask?.continue({ (task) -> Any? in

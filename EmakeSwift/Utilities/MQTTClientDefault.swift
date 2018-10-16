@@ -110,7 +110,6 @@ extension MQTTClientDefault: MQTTSessionDelegate{
             self.pushNotice(model:messageModel!)
             
             //3.聊天存储
-            let realm = try! Realm()
             //聊天数据
             let chatData = RealmChatData()
             let messageBodyText = messageModel?.MessageBody?.toJSONString(prettyPrint: true)
@@ -128,7 +127,7 @@ extension MQTTClientDefault: MQTTSessionDelegate{
             chatData.messageType = messageModel?.MessageBody?.Type
             chatData.userType = messageModel?.From?.UserType ?? ""
             RealmChatTool.insertChatData(by: chatData)
-            
+        
             //聊天列表
             let chatList = RealmChatListData()
             chatList.chatRoomID = topic
@@ -137,6 +136,7 @@ extension MQTTClientDefault: MQTTSessionDelegate{
             if part.count == 3 {
                 clientId = "user/" + part[2]
             }
+            
             let listData = RealmChatTool.getChatList(clientId: clientId)
             if (messageModel?.From?.ClientID?.contains("user/"))! {
                 chatList.userName = messageModel?.From?.DisplayName ?? ""
@@ -151,7 +151,9 @@ extension MQTTClientDefault: MQTTSessionDelegate{
                     chatList.userType = listData?.userType
                 }
             }
+            print(listData?.messageCount)
             let count = Int(listData?.messageCount ?? "0")! + 1
+            print(String(format: "%d", arguments: [count]))
             chatList.messageCount = String(format: "%d", arguments: [count])
             chatList.clientId = clientId
             chatList.message =  messageBodyText ?? ""
@@ -305,17 +307,11 @@ extension MQTTClientDefault: MQTTSessionDelegate{
             print("MQTT连接状态----connected")
         case .connectionClosed:
             print("MQTT连接状态----connection closed")
-        case .connectionError:
+        case .connectionRefused:
             print("MQTT连接状态----connection error")
-            self.autoConnnect()
-        case .protocolError:
-            print("MQTT连接状态----protocoll error")
-            self.autoConnnect()
-        case .connectionClosedByBroker:
-            print("MQTT连接状态----connection closed by broker")
-            self.autoConnnect()
         default:
             print("MQTT连接状态----connection refused")
+            self.autoConnnect()
         }
     }
     

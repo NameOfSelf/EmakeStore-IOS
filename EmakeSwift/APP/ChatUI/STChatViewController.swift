@@ -53,7 +53,9 @@ class STChatViewController: BaseViewController {
     var page : NSInteger? = 0
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.sendMessageListCMD(with: 0)
+        let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
+        let topic = "chatroom/" + storeId + "/" + self.userId!
+        self.MaxMessageID = RealmChatTool.getMessageDataMaxMessageID(chatRoomId: topic)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -63,7 +65,20 @@ class STChatViewController: BaseViewController {
         let list = RealmChatTool.getAllChatListData()
         for data in list {
             if data.clientId == clientId {
-                RealmChatTool.updateChatListCount(with: clientId)
+                let chatList = RealmChatListData()
+                let listData = RealmChatTool.getChatList(clientId: clientId)
+                chatList.userName = listData?.userName
+                chatList.userAvata = listData?.userAvata
+                chatList.userPhone = listData?.userPhone
+                chatList.userType = listData?.userType
+                chatList.clientId = listData?.clientId
+                chatList.message = listData?.message
+                chatList.sendTime = listData?.sendTime
+                chatList.messageType = listData?.messageType
+                chatList.groupInfo = listData?.groupInfo
+                chatList.chatRoomID = listData?.chatRoomID
+                chatList.messageCount = "0"
+                RealmChatTool.updateChatListCount(with: chatList)
                 break
             }
         }
@@ -71,6 +86,7 @@ class STChatViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.sendMessageListCMD(with: 0)
         if self.isChatWithOffcial {
             self.title = "平台客服"
         }else{
@@ -91,9 +107,7 @@ class STChatViewController: BaseViewController {
             self.myInputView.hideFeatureView()
             self.getChatDataList()
         }
-        DispatchQueue.main.asyncAfter(deadline: .now()+0.3) {
-            self.messageCollectionView.messageCollectionView.mj_header.beginRefreshing()
-        }
+        self.messageCollectionView.messageCollectionView.mj_header.beginRefreshing()
     }
     
     func getChatDataList() {
@@ -135,7 +149,11 @@ class STChatViewController: BaseViewController {
                 self.messageReceived(messageModel: message, topic: topic)
             }
             self.messageCollectionView.messageCollectionView.mj_header.endRefreshing()
-//            self.messageCollectionView.scrollToBottom(with: true)
+            if self.page == 1 {
+                DispatchQueue.main.async {
+                    self.messageCollectionView.scrollToBottom(with: false)
+                }
+            }
         }) { (error) in
             self.page = self.page! - 1
             self.messageCollectionView.messageCollectionView.mj_header.endRefreshing()
@@ -146,6 +164,18 @@ class STChatViewController: BaseViewController {
         self.myInputView.hideFeatureView()
     }
     
+    
+    @objc func scrollMesssageCollectionViewToBottom() {
+        let height = (self.messageCollectionView.messageCollectionView.contentSize.height - ScreenHeight)
+        if self.messageCollectionView.messageCollectionView.contentSize.height > ScreenHeight {
+            
+            self.messageCollectionView.messageCollectionView.setContentOffset(CGPoint(x: 0, y: height), animated: true)
+        }else{
+            
+        }
+    }
+    
+    
     //创建消息体
     func creatMessageModel(messageBody:[String:Any],messageId:String) -> [String:Any]{
         let UserDefalultStoreName = UserDefaults.standard.object(forKey: EmakeStoreName)
@@ -154,7 +184,7 @@ class STChatViewController: BaseViewController {
         let gropModel = Mapper<GroupModel>().map(JSON: grop)
         let gropString = gropModel?.toJSONString(prettyPrint: true)
         let userId = UserDefaults.standard.object(forKey: EmakeUserId) ?? ""
-        let nickName = UserDefaults.standard.object(forKey: EmakeUserNickName) ?? ""
+        let nickName = UserDefaults.standard.object(forKey: EmakeUserServiceID) ?? ""
         let phoneNumber = UserDefaults.standard.object(forKey: EmakeUserPhoneNumber) ?? ""
         let from : [String:Any] =  ["UserId":userId ,"ClientID":MQTTClienID,"PhoneNumber":phoneNumber,"DisplayName":nickName,"Group":gropString ?? "","Avatar":""]
         let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
@@ -394,6 +424,7 @@ extension STChatViewController: IMUINewInputViewDelegate  {
             self?.messageCollectionView.appendMessage(with: outGoingmessage)
         }
         self.navigationController?.pushViewController(vc, animated: true)
+        
     }
     //客服转接
     func didSelectSwitchServers() {
@@ -493,7 +524,6 @@ extension STChatViewController: IMUINewInputViewDelegate  {
         let voiceOSSPath = self.getOSSPath(UUID: MessageId, type: .Voice)
         let fileName = MessageId + ".m4a"
         var voiceData : Data?
-        let duration = String(format: "%d", arguments: [Int(durationTime)])
         do {
             let url = URL(fileURLWithPath: voicePath)
             voiceData = try Data.init(contentsOf: url)
@@ -502,7 +532,7 @@ extension STChatViewController: IMUINewInputViewDelegate  {
             return
             
         }
-        let messageBody : [String:Any] = ["Type":MessageBodyType.Voice.rawValue,"Voice":voiceOSSPath,"VoiceDuration":duration]
+        let messageBody : [String:Any] = ["Type":MessageBodyType.Voice.rawValue,"Voice":voiceOSSPath,"VoiceDuration":Int(durationTime)]
         let user = self.getMyUserInfo()
         OSSClientDefault.getSharedInstance().uploadObjectAsync(uploadData: voiceData!, fileName: fileName, type: OSSUploadType.voice, successBlock: {
             DispatchQueue.main.async {
@@ -793,9 +823,11 @@ extension STChatViewController : MQTTClientDefaultDelegate {
     func commandReceived(commandModel: CommandModel, topic: String) {
         //
         if commandModel.cmd == CommandType.UserMessageList.rawValue {
-            self.MaxMessageID = commandModel.message_id_last
-            self.page = 0
-            self.messageCollectionView.messageCollectionView.mj_header.beginRefreshing()
+            if commandModel.message_id_last! > self.MaxMessageID!{
+                self.MaxMessageID = commandModel.message_id_last
+                self.page = 0
+                self.messageCollectionView.messageCollectionView.mj_header.beginRefreshing()
+            }
         }else if commandModel.cmd == CommandType.StoreCustomerList.rawValue {
             let vc = STSwitchListViewController()
             vc.switchList = commandModel.customer_ids
@@ -842,6 +874,7 @@ extension STChatViewController : MQTTClientDefaultDelegate {
     
     func updateMessageList(messageModel: MessageModel, topic: String) {
         
+        
         let chatList = RealmChatListData()
         chatList.chatRoomID = topic
         let part = topic.components(separatedBy: "/")
@@ -849,6 +882,7 @@ extension STChatViewController : MQTTClientDefaultDelegate {
         if part.count == 3 {
             clientId = "user/" + part[2]
         }
+        let listData = RealmChatTool.getChatList(clientId: clientId)
         let messageBodyText = messageModel.MessageBody?.toJSONString(prettyPrint: true)
         chatList.userName = self.userName ?? ""
         chatList.userAvata = self.userAvatar ?? ""
@@ -859,6 +893,7 @@ extension STChatViewController : MQTTClientDefaultDelegate {
         chatList.sendTime = String(format: "%d", arguments: [messageModel.Timestamp!])
         chatList.groupInfo = messageModel.From?.Group ?? ""
         chatList.messageType = messageModel.MessageBody?.Type
+        chatList.messageCount = listData?.messageCount
         if self.userId == part[2]{
             RealmChatTool.insertChatListData(by: chatList)
         }

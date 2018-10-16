@@ -41,13 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "EmakeSwift/APP/Message/STMessageListViewController.swift"
-            timestampString = "561020108.705924"
+            filePath = "EmakeSwift/APP/ChatUI/STChatViewController.swift"
+            timestampString = "561352983.5747401"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "149"
-            endingLineNumber = "149"
-            landmarkName = "goChatVC(with:index:)"
+            startingLineNumber = "827"
+            endingLineNumber = "827"
+            landmarkName = "commandReceived(commandModel:topic:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -57,13 +57,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "EmakeSwift/APP/Message/STMessageListViewController.swift"
-            timestampString = "561020108.7062531"
+            filePath = "EmakeSwift/APP/ChatUI/STChatViewController.swift"
+            timestampString = "561352983.574827"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
-            landmarkName = "goChatVC(with:index:)"
+            startingLineNumber = "829"
+            endingLineNumber = "829"
+            landmarkName = "commandReceived(commandModel:topic:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

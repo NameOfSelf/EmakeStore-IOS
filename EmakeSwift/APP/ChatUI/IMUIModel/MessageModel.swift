@@ -20,6 +20,7 @@ class MessageModel: Mappable {
     var Timestamp : Int?
     var isSwitchMessage : Bool?
     var switchServerID : String?
+    var isDisplayMessage : Bool?
     required init?(map: Map) {
         
     }
