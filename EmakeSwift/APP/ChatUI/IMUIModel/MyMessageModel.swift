@@ -41,6 +41,17 @@ class MyMessageModel: IMUIMessageModel {
         self.init(msgId: msgId,messageIDInt: messageID, messageStatus: messageStatus, fromUser: user, isOutGoing: isOutGoing, date: Date(), type: "Good", text: productJsonString, mediaPath: "", layout:  myLayout, duration: nil)
     }
     
+    convenience init(fileJsonString: String, isOutGoing: Bool, isNeedShowTime: Bool, msgId: String, messageID:Int, user: MyUser, messageStatus: IMUIMessageStatus) {
+        
+        let myLayout = MyMessageCellLayout(isOutGoingMessage: isOutGoing,
+                                           isNeedShowTime: isNeedShowTime,
+                                           bubbleContentSize: CGSize(width: WidthRate(actureValue: 233), height: HeightRate(actureValue: 74)),
+                                           bubbleContentInsets: UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 15),
+                                           timeLabelContentSize: CGSize(width: 200, height: 20),
+                                           type: "File")
+        self.init(msgId: msgId,messageIDInt: messageID, messageStatus: messageStatus, fromUser: user, isOutGoing: isOutGoing, date: Date(), type: "File", text: fileJsonString, mediaPath: "", layout:  myLayout, duration: nil)
+    }
+    
     convenience init(contractJsonString: String, isOutGoing: Bool, isNeedShowTime: Bool, msgId: String, messageID:Int, user: MyUser, messageStatus: IMUIMessageStatus) {
         
         let myLayout = MyMessageCellLayout(isOutGoingMessage: isOutGoing,
@@ -175,6 +186,8 @@ class MyMessageCellLayout: IMUIMessageCellLayout {
         return IMUIProductContentView()
     case "MutilePart":
         return IMUIContractMessageContentView()
+    case "File":
+        return IMUIFileContentView()
     default:
         return IMUIDefaultContentView()
     }

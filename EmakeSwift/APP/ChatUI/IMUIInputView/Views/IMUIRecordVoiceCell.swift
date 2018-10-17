@@ -127,14 +127,14 @@ class IMUIRecordVoiceCell: UICollectionViewCell, IMUINewFeatureCellProtocol {
       self.swtichToPlayModeBtn.isHidden = true
       self.cancelVoiceBtn.isHidden = true
       self.resetSubViewsStyle()
-      
-        self.featureDelegate?.didRecordVideo(with: self.finishiRecorderCache!.voiceFilePath, durationTime: self.finishiRecorderCache!.duration)
-      recordHelper.recordPath = nil
+      let finishiRecorder = recordHelper.finishRecordingCompletion()
+        self.featureDelegate?.didRecordVideo(with: finishiRecorder.voiceFilePath, durationTime: finishiRecorder.duration)
     }
     
   }
   
   func resetSubViewsStyle() {
+    
     self.playVoiceBtnWidth.constant = IMUIRecordVoiceCell.buttonNormalWith
     self.playVoiceBtnHeight.constant = IMUIRecordVoiceCell.buttonNormalWith
     self.swtichToPlayModeBtn.layer.cornerRadius = IMUIRecordVoiceCell.buttonNormalWith/2

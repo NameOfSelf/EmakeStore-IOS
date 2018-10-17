@@ -54,7 +54,8 @@ let NotificationLoginRefresh = "NotificationLoginRefresh"
  MQTT
  */
 //let MQTT_IP    = "api.emake.cn"
-let MQTT_IP    = "mallapi.emake.cn"
+//let MQTT_IP    = "192.168.0.106"
+let MQTT_IP    = "mallapitest.emake.cn"
 let MQTT_PORT  = 1883
 let MQTT_CMDTopic = "customer/" + (UserDefaults.standard.object(forKey:EmakeStoreId) as! String) + "/" + (UserDefaults.standard.object(forKey:EmakeUserServiceID) as! String)
 let MQTTClienID = "customer/" + (UserDefaults.standard.object(forKey:EmakeStoreId) as! String) + "/" + (UserDefaults.standard.object(forKey:EmakeUserServiceID) as! String)

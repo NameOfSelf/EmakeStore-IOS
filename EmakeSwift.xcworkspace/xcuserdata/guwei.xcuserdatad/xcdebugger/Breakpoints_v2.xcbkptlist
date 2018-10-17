@@ -41,13 +41,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "EmakeSwift/APP/ChatUI/STChatViewController.swift"
-            timestampString = "561352983.5747401"
+            filePath = "EmakeSwift/APP/ChatUI/IMUIInputView/Controllers/IMUINewInputView.swift"
+            timestampString = "561362963.500672"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "827"
-            endingLineNumber = "827"
-            landmarkName = "commandReceived(commandModel:topic:)"
+            startingLineNumber = "192"
+            endingLineNumber = "192"
+            landmarkName = "didSelectedServerSwitch()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "EmakeSwift/APP/ChatUI/IMUIInputView/Controllers/IMUINewInputView.swift"
+            timestampString = "561363385.110007"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "193"
+            endingLineNumber = "193"
+            landmarkName = "didSelectedServerSwitch()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -58,12 +74,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "EmakeSwift/APP/ChatUI/STChatViewController.swift"
-            timestampString = "561352983.574827"
+            timestampString = "561430939.734025"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "829"
-            endingLineNumber = "829"
-            landmarkName = "commandReceived(commandModel:topic:)"
+            startingLineNumber = "441"
+            endingLineNumber = "441"
+            landmarkName = "didSelectSwitchServers()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

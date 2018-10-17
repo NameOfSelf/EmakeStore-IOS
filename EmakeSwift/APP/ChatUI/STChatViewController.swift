@@ -32,6 +32,10 @@ class STChatViewController: BaseViewController {
     @IBOutlet weak var myInputView: IMUINewInputView!
 
     var isChatWithOffcial : Bool = false
+    var isUploadFile : Bool = false
+    var filePath : String?
+    var fileName : String?
+    var fileData : Data?
     //用户信息
     var userId : String?
     var userName : String?
@@ -106,7 +110,12 @@ class STChatViewController: BaseViewController {
         self.messageCollectionView.messageCollectionView.headerRefresh {
             self.myInputView.hideFeatureView()
             self.getChatDataList()
+            if self.isUploadFile {
+                self.isUploadFile = false
+                self.sendFileMessage(with: self.filePath!)
+            }
         }
+        
         self.messageCollectionView.messageCollectionView.mj_header.beginRefreshing()
     }
     
@@ -494,7 +503,7 @@ extension STChatViewController: IMUINewInputViewDelegate  {
   
     func startRecordVoice() {
         
-        self.perform(#selector(stopRecord), with: nil, afterDelay: 60)
+        self.perform(#selector(stopRecord), with: nil, afterDelay: 59)
     }
   
     @objc func stopRecord() {
@@ -555,6 +564,32 @@ extension STChatViewController: IMUINewInputViewDelegate  {
         }
         
     }
+    
+    
+    func sendFileMessage(with filePath:String){
+        
+        let fileSize = Tools.getFileSize(size: Double((self.fileData?.count)!))
+        let fileNameLastCommpoment = String(format: "%@_%@", arguments: [filePath,self.fileName!])
+        let fileOSSPath = self.getOSSPath(UUID: fileNameLastCommpoment, type: .File)
+        let fileModel = MessageFileModel()
+        fileModel.FileName = self.fileName ?? ""
+        fileModel.FileSize = fileSize
+        fileModel.FilePath = fileOSSPath
+        let jsonString = fileModel.toJSONString()
+        let messageBody : [String:Any] = ["Type":MessageBodyType.File.rawValue,"Text":jsonString]
+        let user = self.getMyUserInfo()
+        OSSClientDefault.getSharedInstance().uploadObjectAsync(uploadData: self.fileData!, fileName: fileNameLastCommpoment, type: OSSUploadType.file, successBlock: {
+            DispatchQueue.main.async {
+                let message = MyMessageModel.init(fileJsonString: jsonString!, isOutGoing: true, isNeedShowTime: false, msgId: filePath, messageID: 0, user: user, messageStatus: .sending)
+                self.messageCollectionView.appendMessage(with: message)
+                let messageModel = self.creatMessageModel(messageBody: messageBody,messageId:filePath)
+                self.sendMessage(message: messageModel)
+            }
+        }) {
+            let message = MyMessageModel.init(fileJsonString: jsonString!, isOutGoing: true, isNeedShowTime: false, msgId: filePath, messageID: 0, user: user, messageStatus: .failed)
+            self.messageCollectionView.appendMessage(with: message)
+        }
+    }
   
     func getOSSPath(UUID:String,type:MessageBodyType) -> String {
         
@@ -564,7 +599,7 @@ extension STChatViewController: IMUINewInputViewDelegate  {
         }else if type == .Voice {
             OSSPath = String(format: "%@%@.m4a", arguments: [ALiYunOSSVoicePath,UUID])
         }else if type == .File {
-            
+            OSSPath = String(format: "%@%@", arguments: [ALiYunOSSFilePath,UUID])
         }
         return OSSPath ?? ""
     }
@@ -815,6 +850,13 @@ extension STChatViewController : MQTTClientDefaultDelegate {
             }else{
                 self.messageCollectionView.addMessageOrder(with: message)
             }
+        case MessageBodyType.File.rawValue:
+            let message = MyMessageModel(fileJsonString: (messageModel.MessageBody?.toJSONString())!, isOutGoing: user.isOutGoing!, isNeedShowTime: false, msgId: messageModel.MessageId!, messageID: messageModel.MessageID!, user: user, messageStatus: .success)
+            if self.messageCollectionView.chatDataManager.allMsgidArr.contains(messageModel.MessageId!){
+                self.messageCollectionView.updateMessage(with: message)
+            }else{
+                self.messageCollectionView.addMessageOrder(with: message)
+            }
         default:
             break
         }
@@ -882,7 +924,6 @@ extension STChatViewController : MQTTClientDefaultDelegate {
         if part.count == 3 {
             clientId = "user/" + part[2]
         }
-        let listData = RealmChatTool.getChatList(clientId: clientId)
         let messageBodyText = messageModel.MessageBody?.toJSONString(prettyPrint: true)
         chatList.userName = self.userName ?? ""
         chatList.userAvata = self.userAvatar ?? ""
@@ -893,7 +934,7 @@ extension STChatViewController : MQTTClientDefaultDelegate {
         chatList.sendTime = String(format: "%d", arguments: [messageModel.Timestamp!])
         chatList.groupInfo = messageModel.From?.Group ?? ""
         chatList.messageType = messageModel.MessageBody?.Type
-        chatList.messageCount = listData?.messageCount
+        chatList.messageCount = "0"
         if self.userId == part[2]{
             RealmChatTool.insertChatListData(by: chatList)
         }

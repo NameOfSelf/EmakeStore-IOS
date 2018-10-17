@@ -18,6 +18,8 @@ class STUserInfoViewModel: NSObject {
             if model.ResultCode == 0{
                 let orderList = Mapper<STUserOrderModel>().mapArray(JSONArray: model.Data as! [[String : Any]])
                 successBlock(orderList)
+            }else{
+                failedBlock("error")
             }
         }) { (error) in
             failedBlock(error)

@@ -101,9 +101,7 @@ open class IMUIMessageCollectionView: UIView {
     
     open func addMessageOrder(with message: IMUIMessageProtocol) {
         self.chatDataManager.addMessage(with: message)
-        DispatchQueue.main.async {
-            self.messageCollectionView.reloadData()
-        }
+        self.messageCollectionView.reloadDataNoScroll()
     }
   
   @objc open func insertMessage(with message: IMUIMessageProtocol) {

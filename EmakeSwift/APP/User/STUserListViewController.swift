@@ -232,7 +232,7 @@ class STUserListViewController: BaseViewController {
         }else{
             CategoryId = UserDefalultStoreCategoryBId as? String
         }
-        let parameters: NSDictionary = ["pageIndex":"1","pageSize":1000000,"SearchContent":searchText,"CategoryBId ":CategoryId!,"SearchStyle ":SearchStyle]
+        let parameters: NSDictionary = ["pageIndex":"1","pageSize":1000000,"SearchContent":searchText,"CategoryBId":CategoryId!,"SearchStyle":SearchStyle]
         viewModel.searchUserList(self, pamameters: parameters) { (modelList) in
             let vc = STSearchUserViewController()
             vc.dataList = modelList as? [STUserModel]

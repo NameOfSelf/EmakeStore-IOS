@@ -37,7 +37,8 @@ class MQTTClientDefault: NSObject {
         self.client.session?.protocolLevel = .version311
         self.client.session?.cleanSessionFlag = false
         self.client.session?.delegate =  self.client
-        self.client.connectCount = 1000
+        print(NSIntegerMax)
+        self.client.connectCount = NSIntegerMax
         self.client.nowCount = 0
     }
     //连接

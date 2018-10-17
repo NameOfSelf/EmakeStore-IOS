@@ -18,6 +18,8 @@ class STOrderListViewModel: NSObject {
             if model.ResultCode == 0{
                 let userList = Mapper<STOrderModel>().mapArray(JSONArray: model.Data as! [[String : Any]])
                 successBlock(userList)
+            }else{
+                failedBlock("")
             }
         }) { (error) in
             failedBlock(error)

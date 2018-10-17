@@ -9,7 +9,7 @@
 import UIKit
 import IQKeyboardManagerSwift
 import Alamofire
-
+import Toast
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -66,6 +66,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        if self.window != nil {
+            if UserDefaults.standard.object(forKey: EmakeToken) == nil{
+                Tools.getCurrentViewController().view.makeToast("请登录后重新操作", duration: 1.0, position: CSToastPositionBottom)
+                return true
+            }
+            let MessageId = UUID.init().uuidString
+            let fileNameStr = url.lastPathComponent
+            let fileNameTotal = String(format: "%@_%@", arguments: [MessageId,fileNameStr])
+            let localPath = String(format: "%@/Documents/%@.png", arguments: [NSHomeDirectory(),fileNameTotal])
+            var fileData : Data?
+            do {
+                fileData = try Data.init(contentsOf: url)
+                if !FileManager.default.fileExists(atPath: localPath) {
+                    do {
+                        try fileData?.write(to: URL(fileURLWithPath: localPath))
+                    }catch {
+                        
+                    }
+                }
+                let vc = STFileMessageListViewController()
+                vc.fileData = fileData
+                vc.filePath = MessageId
+                vc.fileName = fileNameStr
+                Tools.getCurrentNavigationController().pushViewController(vc, animated: true)
+            }catch {
+                print("write image file error")
+                return true
+            }
+        }
+        return true
     }
     
     @objc func go(_ timer:Timer) {

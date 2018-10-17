@@ -16,6 +16,8 @@ class STUserListViewModel: NSObject {
             if model.ResultCode == 0{
                 let userList = Mapper<STUserModel>().mapArray(JSONArray: model.Data as! [[String : Any]])
                 successBlock(userList)
+            }else{
+                failedBlock("error")
             }
         }) { (error) in
             failedBlock(error)
@@ -28,6 +30,8 @@ class STUserListViewModel: NSObject {
             if model.ResultCode == 0{
                 let userList = Mapper<STUserModel>().mapArray(JSONArray: model.Data as! [[String : Any]])
                 successBlock(userList)
+            }else{
+                failedBlock("error")
             }
         }) { (error) in
             failedBlock(error)

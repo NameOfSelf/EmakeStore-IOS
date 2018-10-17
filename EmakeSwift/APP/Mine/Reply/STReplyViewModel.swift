@@ -17,6 +17,8 @@ class STReplyViewModel: NSObject {
             if model.ResultCode == 0{
                 let replyModel = Mapper<STReplyModel>().mapArray(JSONArray: [model.Data as! [String : Any]])
                 successBlock(replyModel)
+            }else{
+                
             }
         }) { (error) in
             print(error)

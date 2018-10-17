@@ -107,6 +107,8 @@
 		5E281D832136954700D8435C /* MQTTClientDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E281D822136954700D8435C /* MQTTClientDefault.swift */; };
 		5E281D85213780A800D8435C /* CommandModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E281D84213780A800D8435C /* CommandModel.swift */; };
 		5E2EED9821547BDC00322E13 /* ResopnseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2EED9721547BDC00322E13 /* ResopnseViewModel.swift */; };
+		5E31DCDB2175C6860083BA1F /* STFileMessageListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E31DCDA2175C6860083BA1F /* STFileMessageListViewController.swift */; };
+		5E31DCDD2175D8140083BA1F /* MessageFileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E31DCDC2175D8140083BA1F /* MessageFileModel.swift */; };
 		5E3B84FB215CD8D400D63C0A /* DispatchQueue+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3B84FA215CD8D400D63C0A /* DispatchQueue+Additions.swift */; };
 		5E3B8507215DC65300D63C0A /* STMessageConnvientReplyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3B8506215DC65300D63C0A /* STMessageConnvientReplyViewController.swift */; };
 		5E3B8509215DFE8D00D63C0A /* UIImage+Addtions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3B8508215DFE8D00D63C0A /* UIImage+Addtions.swift */; };
@@ -352,6 +354,8 @@
 		5E281D822136954700D8435C /* MQTTClientDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MQTTClientDefault.swift; sourceTree = "<group>"; };
 		5E281D84213780A800D8435C /* CommandModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandModel.swift; sourceTree = "<group>"; };
 		5E2EED9721547BDC00322E13 /* ResopnseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResopnseViewModel.swift; sourceTree = "<group>"; };
+		5E31DCDA2175C6860083BA1F /* STFileMessageListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STFileMessageListViewController.swift; sourceTree = "<group>"; };
+		5E31DCDC2175D8140083BA1F /* MessageFileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageFileModel.swift; sourceTree = "<group>"; };
 		5E3B84FA215CD8D400D63C0A /* DispatchQueue+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Additions.swift"; sourceTree = "<group>"; };
 		5E3B8506215DC65300D63C0A /* STMessageConnvientReplyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STMessageConnvientReplyViewController.swift; sourceTree = "<group>"; };
 		5E3B8508215DFE8D00D63C0A /* UIImage+Addtions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Addtions.swift"; sourceTree = "<group>"; };
@@ -857,6 +861,14 @@
 			path = IMUIRealm;
 			sourceTree = "<group>";
 		};
+		5E31DCD92175C6580083BA1F /* SendFileMessageList */ = {
+			isa = PBXGroup;
+			children = (
+				5E31DCDA2175C6860083BA1F /* STFileMessageListViewController.swift */,
+			);
+			path = SendFileMessageList;
+			sourceTree = "<group>";
+		};
 		5E3B8505215DC63100D63C0A /* ConnvientReply */ = {
 			isa = PBXGroup;
 			children = (
@@ -927,6 +939,7 @@
 				5E281D80213675D100D8435C /* MessageModel.swift */,
 				5E281D84213780A800D8435C /* CommandModel.swift */,
 				5EB2F183215F51E200025078 /* MessageOrderModel.swift */,
+				5E31DCDC2175D8140083BA1F /* MessageFileModel.swift */,
 			);
 			path = IMUIModel;
 			sourceTree = "<group>";
@@ -1192,6 +1205,7 @@
 			isa = PBXGroup;
 			children = (
 				5EDBECAB213FC21F004F93C5 /* STMessageListViewController.swift */,
+				5E31DCD92175C6580083BA1F /* SendFileMessageList */,
 				5EFB34EF216C9045009D1ADA /* SystemMessage */,
 				5E10DF8A216114B200735670 /* OrderDetail */,
 				5E10DF872160EDC000735670 /* SwitchList */,
@@ -1547,6 +1561,7 @@
 				5EA0B1FB201DB50C00BCF189 /* UIScrollView+MJRefresh.swift in Sources */,
 				5EA0B204201DB62B00BCF189 /* BaseNavigationViewController.swift in Sources */,
 				5EF66C0721539A380045A5A3 /* STOrderListViewModel.swift in Sources */,
+				5E31DCDD2175D8140083BA1F /* MessageFileModel.swift in Sources */,
 				5E008089212520780090CB8A /* IMUIMessageProtocol.swift in Sources */,
 				5EA0B222201EAB7200BCF189 /* RequestPlugin.swift in Sources */,
 				5E008085212520780090CB8A /* IMUIMessageModel.swift in Sources */,
@@ -1575,6 +1590,7 @@
 				5EC7FB2A216CB3C4005AA08E /* MessageEventTipsCollectionViewCell.swift in Sources */,
 				5E168207216E0367002520FA /* JZUserNotification.m in Sources */,
 				5EB6FEE1214903920008D9CF /* STOrderTopCell.swift in Sources */,
+				5E31DCDB2175C6860083BA1F /* STFileMessageListViewController.swift in Sources */,
 				5E10DF892160EDE100735670 /* STSwitchListViewController.swift in Sources */,
 				5E758CA3215FB3820011A06D /* STMessageResponseTableViewCell.swift in Sources */,
 				5EF66C0B21539B460045A5A3 /* STUserInfoViewModel.swift in Sources */,

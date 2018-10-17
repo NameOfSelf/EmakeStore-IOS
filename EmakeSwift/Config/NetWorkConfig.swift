@@ -38,8 +38,8 @@ let EmakeResponseData = "Data"
 /*
  Emake地址
  */
+let EmakeHost = "http://mallapitest.emake.cn/"
 //let EmakeHost = "http://mallapi.emake.cn/"
-let EmakeHost = "http://mallapi.emake.cn/"
 let EmakeHostTest = "http://192.168.0.191:3100/"
 
 

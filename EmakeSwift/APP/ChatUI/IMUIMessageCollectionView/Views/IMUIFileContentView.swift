@@ -7,7 +7,7 @@
 //
 import Foundation
 import UIKit
-
+import ObjectMapper
 public class IMUIFileContentView: UIView, IMUIMessageContentViewProtocol {
     
     var imageView = UIImageView()
@@ -28,10 +28,10 @@ public class IMUIFileContentView: UIView, IMUIMessageContentViewProtocol {
     }
     public func layoutContentView(message: IMUIMessageModelProtocol) {
         
-        imageView.frame = CGRect(x: 9, y:7, width: 42, height:42)
+        imageView.frame = CGRect(x: 15, y:10, width: 42, height:42)
         fileName.font = UIFont.systemFont(ofSize: 14)
-        fileName.frame = CGRect(x: 55, y:7, width: 160, height:20)
-        fileSize.frame = CGRect(x: 55, y:30, width: 160, height:20)
+        fileName.frame = CGRect(x: 65, y:10, width: 160, height:20)
+        fileSize.frame = CGRect(x: 65, y:33, width: 160, height:20)
         fileName.font = UIFont.systemFont(ofSize: 16)
         fileSize.font = UIFont.systemFont(ofSize: 14)
         if message.isOutGoing {
@@ -39,11 +39,11 @@ public class IMUIFileContentView: UIView, IMUIMessageContentViewProtocol {
         }else{
             fileName.textColor = UIColor.black
         }
-//        var model = YHFileModel.mj_object(withKeyValues: message.text())
+        let model = Mapper<MessageBodyModel>().map(JSONString: message.text())
+        let fileModel = Mapper<MessageFileModel>().map(JSONString: (model?.Text)!)
         
-//        fileName.text = model?.fileName
-//        fileSize.text = model?.fileSize
-        
+        fileName.text = fileModel?.FileName
+        fileSize.text = fileModel?.FileSize
         imageView.image = UIImage(named: "wenjian")
     }
 }

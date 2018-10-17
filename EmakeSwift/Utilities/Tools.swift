@@ -53,4 +53,20 @@ class Tools: NSObject {
         return md5String;
     }
     
+    public class func getFileSize(size:Double) -> String {
+        var sizeString : String?
+        if size < 1024 {
+            sizeString = String(format: "%d", arguments: [Int(size)])
+        }else if size < 1024 * 1024 {
+            let aFloat = size/1024
+            sizeString = String(format: "%.1fKB", arguments: [aFloat])
+        }else if size < 1024 * 1024 * 1024 {
+            let aFloat = size/(1024*1024)
+            sizeString = String(format: "%.1fMB", arguments: [aFloat])
+        }else{
+            let aFloat = size/(1024*1024*1024)
+            sizeString = String(format: "%.1fGB", arguments: [aFloat])
+        }
+        return sizeString!
+    }
 }

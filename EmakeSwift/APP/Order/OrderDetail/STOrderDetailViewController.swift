@@ -225,7 +225,7 @@ extension STOrderDetailViewController : UITableViewDelegate,UITableViewDataSourc
                 if (productModel?.AddServiceInfo?.count)! > 0 {
                     addServersHeight = (productModel?.AddServiceInfo?.count)! * 16 + 10
                 }else{
-                    addServersHeight = 0
+                    addServersHeight = 10
                 }
                 if height > HeightRate(actureValue: 111){
                     return (height + HeightRate(actureValue: CGFloat(addServersHeight))+HeightRate(actureValue: 65))
