@@ -232,10 +232,7 @@ class LoginViewController: BaseViewController {
             UserDefaults.standard.set(loginModel.userinfo?.BusinessCategory, forKey: EmakeUserBusinessCategory)
             UserDefaults.standard.set(loginModel.userinfo?.ServiceID, forKey: EmakeUserServiceID)
             UserDefaults.standard.synchronize()
-            //延迟一秒
-            DispatchQueue.main.asyncAfter(deadline: .now()+1, execute: {
-                self.getStoreInfo(serverId:(loginModel.userinfo?.ServiceID)!)
-            })
+            self.getStoreInfo(serverId:(loginModel.userinfo?.ServiceID)!)
         })
     }
     
@@ -253,6 +250,7 @@ class LoginViewController: BaseViewController {
             UserDefaults.standard.synchronize()
             MQTTClientDefault.shared().connectToHost(withServerId: serverId,storeID:storeModel.StoreId!)
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationLoginRefresh), object: nil)
+
             self.navigationController?.popToRootViewController(animated: true)
         }
     }

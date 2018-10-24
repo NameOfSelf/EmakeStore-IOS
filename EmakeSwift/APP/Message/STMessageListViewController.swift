@@ -16,6 +16,7 @@ class STMessageListViewController: BaseViewController {
     var responseList : [MessageModel]? = []
     var messageList : Results<RealmChatListData>?
     var table : UITableView?
+    let viewModel = STMessageListViewModel()
     let disposeBag = DisposeBag()
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -51,11 +52,7 @@ class STMessageListViewController: BaseViewController {
         let vc = storyboard.instantiateViewController(withIdentifier: "Chat") as! STChatViewController
         let serverID = UserDefaults.standard.object(forKey: EmakeUserServiceID) as! String
         vc.userId = serverID
-        if UserDefaults.standard.object(forKey: EmakeUserNickName) != nil {
-            vc.userName = UserDefaults.standard.object(forKey: EmakeUserNickName) as? String
-        }else{
-            vc.userName = ""
-        }
+        vc.userName = serverID;
         if UserDefaults.standard.object(forKey: EmakeHeadImageUrlString) != nil {
             vc.userAvatar = UserDefaults.standard.object(forKey: EmakeHeadImageUrlString) as? String
         }else{
@@ -69,6 +66,7 @@ class STMessageListViewController: BaseViewController {
         vc.userType = ""
         vc.isChatWithOffcial = true
         vc.title = "平台客服"
+        vc.userRemarkName = ""
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -99,6 +97,7 @@ class STMessageListViewController: BaseViewController {
         })
     }
 
+    //平台客服入口
     func goChatVC(userModel:RealmChatListData) {
         
         let part = userModel.clientId?.components(separatedBy: "/")
@@ -120,17 +119,25 @@ class STMessageListViewController: BaseViewController {
         }
         vc.userAvatar = userModel.userAvata
         vc.userPhone = userModel.userPhone
+        vc.userRemarkName = userModel.userRemarkName
         vc.userId = userId
         vc.userType = userModel.userType
-        
+        vc.endBlock = { [weak self] text in
+            let deleteClientId = "user/" + text
+            RealmChatTool.deleteChatListData(with: deleteClientId)
+            self?.messageList = RealmChatTool.getAllChatListData()
+            self?.table?.reloadData()
+        }
         if clientSelf == userModel.clientId {
             vc.userName = "平台客服"
             vc.isChatWithOffcial = true
+            vc.userRemarkName = ""
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func goChatVC(with message:MessageModel,index:NSInteger) {
+    //用户
+    func goChatVC(with message:MessageModel,index:NSInteger,userRemarkName:String) {
         
         self.responseList?.remove(at: index)
         let chatList = RealmChatListData()
@@ -138,6 +145,7 @@ class STMessageListViewController: BaseViewController {
         chatList.userAvata = message.From?.Avatar ?? ""
         chatList.userPhone = message.From?.PhoneNumber ?? ""
         chatList.userType = message.From?.UserType
+        chatList.userRemarkName = userRemarkName
         chatList.messageCount = "0"
         chatList.clientId = message.From?.ClientID
         chatList.message =  message.MessageBody?.Text ?? ""
@@ -156,6 +164,7 @@ class STMessageListViewController: BaseViewController {
         let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
         let topic = "chatroom/" + storeId + "/" + userId
         MQTTClientDefault.shared().subcribeTo(topic: topic)
+        self.sendCustomerAcceptService(userId: userId)
         let storyboard = UIStoryboard.init(name: "Chat", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "Chat") as! STChatViewController
         vc.userId = userId
@@ -166,19 +175,60 @@ class STMessageListViewController: BaseViewController {
         }else{
             vc.userName = message.From?.DisplayName
         }
+        vc.endBlock = { [weak self] text in
+            let deleteClientId = "user/" + text
+            RealmChatTool.deleteChatListData(with: deleteClientId)
+            self?.messageList = RealmChatTool.getAllChatListData()
+            self?.table?.reloadData()
+        }
         vc.userAvatar = message.From?.Avatar
         vc.userPhone = message.From?.PhoneNumber
         vc.userType = message.From?.UserType
+        vc.userRemarkName = userRemarkName
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
+    func getUserInfo(with userID:String,message:MessageModel,index:NSInteger) {
+        
+        let parameters : NSDictionary? = ["UserId":userID]
+        viewModel.getUserInfo(self, parameters: parameters!, successBlock: { (model) in
+            let userInfo = model as! STMesageListUserInfoModel
+            var userRemarkName : String?
+            if (userInfo.RemarkName == nil ||  userInfo.RemarkName?.count == 0) && (userInfo.RemarkCompany == nil ||  userInfo.RemarkCompany?.count == 0){
+                userRemarkName = ""
+            }else{
+                userRemarkName = String(format: "%@ %@", arguments: [userInfo.RemarkCompany ?? "",userInfo.RemarkName ?? ""])
+            }
+            self.goChatVC(with: message, index: index, userRemarkName: userRemarkName!)
+        }) { (error) in
+            
+        }
+    }
+    
+    
     func sendStoreServerList() {
+        let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
+        let serverId = UserDefaults.standard.object(forKey: EmakeUserServiceID) as! String
+        let MQTT_CMDTopic = String(format: "customer/%@/%@", arguments: [storeId,serverId])
         let ServerListCMD = CommandModel.creatChatroomCustomerListCMD()
         MQTTClientDefault.shared().sendMessage(withMessage: ServerListCMD, topic: MQTT_CMDTopic) { (error) in
         }
     }
     
+    
+    func sendCustomerAcceptService(userId:String) {
+        let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
+        let serverId = UserDefaults.standard.object(forKey: EmakeUserServiceID) as! String
+        let MQTT_CMDTopic = String(format: "customer/%@/%@", arguments: [storeId,serverId])
+        let ServerListCMD = CommandModel.creatCustomerAcceptService(userId: userId)
+        MQTTClientDefault.shared().sendMessage(withMessage: ServerListCMD, topic: MQTT_CMDTopic) { (error) in
+        }
+    }
+    
     @objc func sendStoreServiceUserList() {
+        let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
+        let serverId = UserDefaults.standard.object(forKey: EmakeUserServiceID) as! String
+        let MQTT_CMDTopic = String(format: "customer/%@/%@", arguments: [storeId,serverId])
         let ServerListCMD = CommandModel.creatStoreServiceUserList()
         MQTTClientDefault.shared().sendMessage(withMessage: ServerListCMD, topic: MQTT_CMDTopic) { (error) in
         }
@@ -226,7 +276,7 @@ extension STMessageListViewController : UITableViewDelegate,UITableViewDataSourc
             let message = self.responseList![indexPath.row]
             cell.setData(data: message)
             cell.responseButton?.rx.tap.subscribe(onNext: { [weak self] in
-                self?.goChatVC(with: message, index: indexPath.row)
+                self?.getUserInfo(with: message.From?.UserId ?? "",message: message,index: indexPath.row)
             }).disposed(by: disposeBag)
             return cell
         }else{

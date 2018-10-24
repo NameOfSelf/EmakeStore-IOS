@@ -14,6 +14,7 @@ class RealmChatListData: Object {
     @objc dynamic var userAvata : String?
     @objc dynamic var userPhone : String?
     @objc dynamic var userType : String?
+    @objc dynamic var userRemarkName : String?
     @objc dynamic var sendTime : String?
     @objc dynamic var clientId : String?
     @objc dynamic var message : String?
@@ -44,3 +45,19 @@ class RealmChatData: Object {
         return "messageIdString"
     }
 }
+
+//用户信息表
+class RealmUserInfo: Object {
+    
+    @objc dynamic var userName : String?
+    @objc dynamic var userAvata : String?
+    @objc dynamic var userPhone : String?
+    @objc dynamic var userType : String?
+    @objc dynamic var clientId : String?
+    @objc dynamic var groupInfo : String?
+    
+    override class func primaryKey() -> String? {
+        return "clientId"
+    }
+}
+

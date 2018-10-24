@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "925C888E730EF40243D9C0D452605857"
+               BlueprintIdentifier = "6024D8444108E35CDFB3C0170436DDAA"
                BuildableName = "SKFPicPreview.bundle"
                BlueprintName = "SKFPicPreview-SKFPicPreview"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "925C888E730EF40243D9C0D452605857"
+            BlueprintIdentifier = "6024D8444108E35CDFB3C0170436DDAA"
             BuildableName = "SKFPicPreview.bundle"
             BlueprintName = "SKFPicPreview-SKFPicPreview"
             ReferencedContainer = "container:Pods.xcodeproj">

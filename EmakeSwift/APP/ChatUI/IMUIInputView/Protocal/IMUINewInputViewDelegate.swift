@@ -68,6 +68,10 @@ import Photos
      */
     @objc optional func didSelectEndServers()
     /**
+     *  Tells the delegate when starting go select end servers mode
+     */
+    @objc optional func didSelectGroupPurchase()
+    /**
      *  Tells the delegate when starting go select switch servers mode
      */
     @objc optional func didSelectSwitchServers()

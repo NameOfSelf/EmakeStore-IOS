@@ -118,7 +118,9 @@ open class IMUIMessageCollectionView: UIView {
     self.chatDataManager.updateMessage(with: message)
     if let index = chatDataManager.index(of: message) {
       let indexPath = IndexPath(item: index, section: 0)
-      self.messageCollectionView.reloadItems(at: [indexPath])
+        DispatchQueue.main.async {
+            self.messageCollectionView.reloadItems(at: [indexPath])
+        }
     }
   }
   

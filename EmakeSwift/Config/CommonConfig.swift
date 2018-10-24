@@ -57,10 +57,10 @@ let NotificationLoginRefresh = "NotificationLoginRefresh"
 //let MQTT_IP    = "192.168.0.106"
 let MQTT_IP    = "mallapitest.emake.cn"
 let MQTT_PORT  = 1883
-let MQTT_CMDTopic = "customer/" + (UserDefaults.standard.object(forKey:EmakeStoreId) as! String) + "/" + (UserDefaults.standard.object(forKey:EmakeUserServiceID) as! String)
-let MQTTClienID = "customer/" + (UserDefaults.standard.object(forKey:EmakeStoreId) as! String) + "/" + (UserDefaults.standard.object(forKey:EmakeUserServiceID) as! String)
-let MQTT_ServerTopic = "chatroom/" + (UserDefaults.standard.object(forKey:EmakeStoreId) as! String) + "/" + (UserDefaults.standard.object(forKey:EmakeUserServiceID) as! String)
-let MQTT_ServerChatRoomID = (UserDefaults.standard.object(forKey:EmakeStoreId) as! String) + "/" + (UserDefaults.standard.object(forKey:EmakeUserServiceID) as! String)
+//let MQTT_CMDTopic = "customer/" + (UserDefaults.standard.object(forKey:EmakeStoreId) as! String) + "/" + (UserDefaults.standard.object(forKey:EmakeUserServiceID) as! String)
+//let MQTTClienID = "customer/" + (UserDefaults.standard.object(forKey:EmakeStoreId) as! String) + "/" + (UserDefaults.standard.object(forKey:EmakeUserServiceID) as! String)
+//let MQTT_ServerTopic = "chatroom/" + (UserDefaults.standard.object(forKey:EmakeStoreId) as! String) + "/" + (UserDefaults.standard.object(forKey:EmakeUserServiceID) as! String)
+//let MQTT_ServerChatRoomID = (UserDefaults.standard.object(forKey:EmakeStoreId) as! String) + "/" + (UserDefaults.standard.object(forKey:EmakeUserServiceID) as! String)
 
 /*
  阿里云OSS

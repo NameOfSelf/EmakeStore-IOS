@@ -9,7 +9,7 @@
 import UIKit
 enum OrderType : String {
     
-    case 待签订,待付款,生产中,生产完成,已发货
+    case 待签订,待付款,生产中,生产完成,发货中,已完成
 }
 class STOrderBottomCell: UITableViewCell {
 
@@ -105,7 +105,11 @@ class STOrderBottomCell: UITableViewCell {
         self.contentView.addSubview(self.contractChatButton!)
         
         self.lookUpContractButton = UIButton(type: .custom)
-        self.lookUpContractButton?.setTitle("预览合同", for: .normal)
+        if orderType == .待签订{
+            self.lookUpContractButton?.setTitle("预览合同", for: .normal)
+        }else{
+            self.lookUpContractButton?.setTitle("查看合同", for: .normal)
+        }
         self.lookUpContractButton?.titleLabel?.font = AdaptFont(actureValue: 10)
         self.lookUpContractButton?.setTitleColor(BaseColor.APP_THEME_MAIN_COLOR, for: .normal)
         self.lookUpContractButton?.layer.borderColor = BaseColor.APP_THEME_MAIN_COLOR.cgColor

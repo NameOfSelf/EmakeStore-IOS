@@ -140,7 +140,6 @@ final class AccessTokenPlugin: PluginType {
             UserDefaultClean()
             let loginVC = LoginViewController()
             let currentNav = Tools.getCurrentNavigationController()
-            currentNav.hidesBottomBarWhenPushed = true
             currentNav.pushViewController(loginVC, animated: true)
             AccessTokenPlugin.flag = true;
         }

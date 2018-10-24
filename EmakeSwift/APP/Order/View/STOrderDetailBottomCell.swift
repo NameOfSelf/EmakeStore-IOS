@@ -42,7 +42,11 @@ class STOrderDetailBottomCell: UITableViewCell {
         self.contentView.addSubview(self.contractChatButton!)
         
         self.lookUpContractButton = UIButton(type: .custom)
-        self.lookUpContractButton?.setTitle("查看合同", for: .normal)
+        if orderType == .待签订{
+            self.lookUpContractButton?.setTitle("预览合同", for: .normal)
+        }else{
+            self.lookUpContractButton?.setTitle("查看合同", for: .normal)
+        }
         self.lookUpContractButton?.titleLabel?.font = AdaptFont(actureValue: 10)
         self.lookUpContractButton?.setTitleColor(TextColor_999999, for: .normal)
         self.lookUpContractButton?.layer.borderColor = TextColor_999999.cgColor
@@ -60,7 +64,7 @@ class STOrderDetailBottomCell: UITableViewCell {
         self.lookUpLogisticsButton?.layer.cornerRadius = 3
         self.contentView.addSubview(self.lookUpLogisticsButton!)
         
-        if orderType == .已发货 {
+        if orderType == .发货中 {
             self.lookUpLogisticsButton?.isHidden = false
             self.lookUpContractButton?.setTitleColor(TextColor_999999, for: .normal)
             self.lookUpContractButton?.layer.borderColor = TextColor_999999.cgColor
@@ -81,7 +85,7 @@ class STOrderDetailBottomCell: UITableViewCell {
         })
         
         self.lookUpContractButton?.snp.makeConstraints({ (make) in
-           if orderType == .已发货 { make.right.equalTo((self.lookUpLogisticsButton?.snp.left)!).offset(WidthRate(actureValue: -10))
+           if orderType == .发货中 { make.right.equalTo((self.lookUpLogisticsButton?.snp.left)!).offset(WidthRate(actureValue: -10))
            }else{
                 make.right.equalTo(WidthRate(actureValue: -12))
             }

@@ -117,10 +117,10 @@ extension STMineViewController : UITableViewDelegate,UITableViewDataSource{
             self.navigationController?.pushViewController(vc, animated: true)
             
         case 2:
-            SDImageCache.shared().clearDisk {
-                self.view.makeToast("清理缓存成功", duration: 1.0, position: CSToastPositionCenter)
-                self.table?.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .none)
-            }
+            let alert = STAlertView.init(frame: CGRect(x: 0, y: 0, width: WidthRate(actureValue: 280), height: HeightRate(actureValue: 160)), title: "提示", message: "确定清理缓存", leftTitle: "取消", rightTitle: "确定")
+            alert?.delegate = self;
+            alert?.showAnimated()
+            
         default:
             let actionSheetView = STActionSheetView.init(frame: .zero, titles: ["确定"])
             actionSheetView.delegate = self
@@ -140,3 +140,18 @@ extension STMineViewController : STActionSheetViewDelegate {
         }
     }
 }
+extension STMineViewController : STAlertViewDelegate {
+    func alertViewLeftButtonClick() {
+        
+    }
+    
+    func alertViewRightButtonClick() {
+        SDImageCache.shared().clearDisk {
+            self.view.makeToast("清理缓存成功", duration: 1.0, position: CSToastPositionCenter)
+            self.table?.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .none)
+        }
+    }
+    
+    
+}
+

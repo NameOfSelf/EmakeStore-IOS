@@ -25,13 +25,16 @@ enum MessageBodyType:String {
     case File = "File"
     case Video = "Video"
     case Order = "Order"
+    case SuperGroup = "SuperGroup"
 }
 class STChatViewController: BaseViewController {
 
     @IBOutlet weak var messageCollectionView: IMUIMessageCollectionView!
     @IBOutlet weak var myInputView: IMUINewInputView!
-
+    typealias EndServersBlock = ((String) -> ())
     var isChatWithOffcial : Bool = false
+
+    //文件上传
     var isUploadFile : Bool = false
     var filePath : String?
     var fileName : String?
@@ -42,6 +45,7 @@ class STChatViewController: BaseViewController {
     var userPhone : String?
     var userAvatar : String?
     var userType : String?
+    var userRemarkName : String?
     
     var lookUpImageArray : [UIImage]? = []
     var messageModel : MessageModel?
@@ -55,6 +59,7 @@ class STChatViewController: BaseViewController {
     let imagePickerVC = UIImagePickerController()
     let viewModel = STOrderListViewModel()
     var page : NSInteger? = 0
+    var endBlock : EndServersBlock?
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
@@ -78,6 +83,7 @@ class STChatViewController: BaseViewController {
                 chatList.clientId = listData?.clientId
                 chatList.message = listData?.message
                 chatList.sendTime = listData?.sendTime
+                chatList.userRemarkName = listData?.userRemarkName
                 chatList.messageType = listData?.messageType
                 chatList.groupInfo = listData?.groupInfo
                 chatList.chatRoomID = listData?.chatRoomID
@@ -104,6 +110,7 @@ class STChatViewController: BaseViewController {
         self.messageCollectionView.backgroundColor = .white
         self.messageCollectionView.messageCollectionView.register(MessageEventCollectionViewCell.self, forCellWithReuseIdentifier: MessageEventCollectionViewCell.self.description())
         self.messageCollectionView.messageCollectionView.register(MessageEventTipsCollectionViewCell.self, forCellWithReuseIdentifier: MessageEventTipsCollectionViewCell.self.description())
+        self.messageCollectionView.messageCollectionView.register(MessageEventSuperGroupCollectionViewCell.self, forCellWithReuseIdentifier: MessageEventSuperGroupCollectionViewCell.self.description())
         let gesture = UITapGestureRecognizer.init(target: self, action: #selector(tapScreenKeyBoardDown))
         self.messageCollectionView.addGestureRecognizer(gesture)
         MQTTClientDefault.shared().delegate = self
@@ -195,8 +202,10 @@ class STChatViewController: BaseViewController {
         let userId = UserDefaults.standard.object(forKey: EmakeUserId) ?? ""
         let nickName = UserDefaults.standard.object(forKey: EmakeUserServiceID) ?? ""
         let phoneNumber = UserDefaults.standard.object(forKey: EmakeUserPhoneNumber) ?? ""
-        let from : [String:Any] =  ["UserId":userId ,"ClientID":MQTTClienID,"PhoneNumber":phoneNumber,"DisplayName":nickName,"Group":gropString ?? "","Avatar":""]
         let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
+        let serverId = UserDefaults.standard.object(forKey: EmakeUserServiceID) as! String
+        let MQTTClienID = String(format: "customer/%@/%@", arguments: [storeId,serverId])
+        let from : [String:Any] =  ["UserId":userId ,"ClientID":MQTTClienID,"PhoneNumber":phoneNumber,"DisplayName":nickName,"Group":gropString ?? "","Avatar":""]
         let toId = "chatroom/" + storeId + "/" + self.userId!
         let message : [String : Any] = ["ToId":toId,"From":from,"MessageBody":messageBody,"MessageId":messageId,"MessageType":"Message"]
         return message
@@ -237,6 +246,9 @@ class STChatViewController: BaseViewController {
         }else{
             user.userAvata = ""
         }
+        let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
+        let serverId = UserDefaults.standard.object(forKey: EmakeUserServiceID) as! String
+        let MQTTClienID = String(format: "customer/%@/%@", arguments: [storeId,serverId])
         user.userClientId = MQTTClienID
         return user
     }
@@ -326,6 +338,9 @@ class STChatViewController: BaseViewController {
     
     func sendMessageListCMD(with mesageId:NSInteger) {
         
+        let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
+        let serverId = UserDefaults.standard.object(forKey: EmakeUserServiceID) as! String
+        let MQTT_CMDTopic = String(format: "customer/%@/%@", arguments: [storeId,serverId])
         let messageListCMD = CommandModel.creatCustomerLisCMD(userId: self.userId!, mesageId: mesageId)
         MQTTClientDefault.shared().sendMessage(withMessage: messageListCMD, topic: MQTT_CMDTopic) { (error) in
         
@@ -333,6 +348,9 @@ class STChatViewController: BaseViewController {
     }
     
     func sendStoreCustomerListCMD() {
+        let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
+        let serverId = UserDefaults.standard.object(forKey: EmakeUserServiceID) as! String
+        let MQTT_CMDTopic = String(format: "customer/%@/%@", arguments: [storeId,serverId])
         let messageListCMD = CommandModel.creatStoreCustomerLisCMD()
         MQTTClientDefault.shared().sendMessage(withMessage: messageListCMD, topic: MQTT_CMDTopic) { (error) in
         }
@@ -354,6 +372,9 @@ class STChatViewController: BaseViewController {
         let data = try? JSONSerialization.data(withJSONObject: userinfoArray, options: .prettyPrinted)
         let jsonStr = String(data: data!, encoding: String.Encoding.utf8)
         let messageListCMD = CommandModel.creatRequestSwitchServiceCMD(userId: self.userId!, switchServerId: serverId, userInfo: jsonStr ?? "")
+        let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
+        let serverId = UserDefaults.standard.object(forKey: EmakeUserServiceID) as! String
+        let MQTT_CMDTopic = String(format: "customer/%@/%@", arguments: [storeId,serverId])
         MQTTClientDefault.shared().sendMessage(withMessage: messageListCMD, topic: MQTT_CMDTopic) { (error) in
             if (error as! String) == "success" {
                 let alert = UIAlertController.init(title: "提示", message: "转接成功", preferredStyle: .alert)
@@ -367,6 +388,9 @@ class STChatViewController: BaseViewController {
     }
     
     func sendRequestServiceCMD() {
+        let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
+        let serverId = UserDefaults.standard.object(forKey: EmakeUserServiceID) as! String
+        let MQTT_CMDTopic = String(format: "customer/%@/%@", arguments: [storeId,serverId])
         let requestServerCMD = CommandModel.creatRequestServiceCMD()
         MQTTClientDefault.shared().sendMessage(withMessage: requestServerCMD, topic: MQTT_CMDTopic) { (error) in
         }
@@ -416,6 +440,9 @@ extension STChatViewController: IMUINewInputViewDelegate  {
     func didSelectOrder() {
         
         let vc = STUserOrderViewController()
+        vc.sendBlock = { [weak self] model in
+            self?.sendProtocol(with: model!)
+        }
         vc.userId = self.userId
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -457,6 +484,25 @@ extension STChatViewController: IMUINewInputViewDelegate  {
         if self.getTakePhotoPermission() {
             self.pushImagePickerController()
         }
+    }
+    
+    func didSelectGroupPurchase() {
+        
+        let vc = STGroupPurchaseViewController()
+        vc.groupBlock = { [weak self] model in
+            self?.sendGroupPurchaseProduct(model: model!)
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func sendGroupPurchaseProduct(model:STGroupPurchaseModel) {
+        
+        let jsonString = model.toJSONString(prettyPrint: true)
+        let messageBody : [String:Any] = ["Type":MessageBodyType.SuperGroup.rawValue,"Text":jsonString ?? ""]
+        let MessageId = UUID.init().uuidString
+        let messageModel = self.creatMessageModel(messageBody: messageBody,messageId:MessageId)
+        self.sendMessage(message: messageModel)
+        
     }
     
     func switchToMicrophoneMode(recordVoiceBtn: UIButton) {
@@ -576,7 +622,7 @@ extension STChatViewController: IMUINewInputViewDelegate  {
         fileModel.FileSize = fileSize
         fileModel.FilePath = fileOSSPath
         let jsonString = fileModel.toJSONString()
-        let messageBody : [String:Any] = ["Type":MessageBodyType.File.rawValue,"Text":jsonString]
+        let messageBody : [String:Any] = ["Type":MessageBodyType.File.rawValue,"Text":jsonString!]
         let user = self.getMyUserInfo()
         OSSClientDefault.getSharedInstance().uploadObjectAsync(uploadData: self.fileData!, fileName: fileNameLastCommpoment, type: OSSUploadType.file, successBlock: {
             DispatchQueue.main.async {
@@ -595,10 +641,13 @@ extension STChatViewController: IMUINewInputViewDelegate  {
         
         var OSSPath:String? = nil
         if type == .Image {
+            let ALiYunOSSImagePath = String(format: "https://%@.%@/%@", arguments: [ALiYunOSSBucketNameImage,ALiYunOSSEndPoint,ALiYunOSSBucketNameImageObjectKey])
             OSSPath = String(format: "%@%@.png", arguments: [ALiYunOSSImagePath,UUID])
-        }else if type == .Voice {
+        }else if type == .Voice { 
+            let ALiYunOSSVoicePath = String(format: "https://%@.%@/%@", arguments: [ALiYunOSSBucketNameVoice,ALiYunOSSEndPoint,ALiYunOSSBucketNameImageVoiceKey])
             OSSPath = String(format: "%@%@.m4a", arguments: [ALiYunOSSVoicePath,UUID])
         }else if type == .File {
+            let ALiYunOSSFilePath = String(format: "https://%@.%@/%@", arguments: [ALiYunOSSBucketNameVoice,ALiYunOSSEndPoint,ALiYunOSSBucketNameImageFileKey])
             OSSPath = String(format: "%@%@", arguments: [ALiYunOSSFilePath,UUID])
         }
         return OSSPath ?? ""
@@ -640,6 +689,12 @@ extension STChatViewController: IMUIMessageMessageCollectionViewDelegate {
             let message = messageModel as! MessageEventTipsModel
             cell.presentCell(tips: message.eventText)
             return cell
+        }else if messageModel is MessageSuperGroupModel{
+            let cellIdentify = MessageEventSuperGroupCollectionViewCell.self.description()
+            let cell = messageCollectionView.dequeueReusableCell(withReuseIdentifier: cellIdentify, for: forItemAt) as! MessageEventSuperGroupCollectionViewCell
+            let message = messageModel as! MessageSuperGroupModel
+            cell.setData(eventText: message.eventText)
+            return cell
         }else {
             return nil
         }
@@ -649,8 +704,11 @@ extension STChatViewController: IMUIMessageMessageCollectionViewDelegate {
         if messageModel is MessageEventModel {
             let number = NSNumber.init(value: Double(HeightRate(actureValue: 240)))
             return number
-        } else if messageModel is MessageEventTipsModel {
+        }else if messageModel is MessageEventTipsModel {
             let number = NSNumber.init(value: Double(HeightRate(actureValue: 40)))
+            return number
+        }else if messageModel is MessageSuperGroupModel {
+            let number = NSNumber.init(value: Double(HeightRate(actureValue: 183)))
             return number
         }else{
             return nil
@@ -660,6 +718,7 @@ extension STChatViewController: IMUIMessageMessageCollectionViewDelegate {
     func messageCollectionView(didTapMessageBubbleInCell: UICollectionViewCell, model: IMUIMessageProtocol) {
         let message = model as! MyMessageModel
         if message.type == MessageBodyType.Image.rawValue {
+            self.lookUpImageArray?.removeAll()
             let localPath = self.getLocalPath(UUID: model.msgId, type: .Image)
             do {
                 let imageData = try Data(contentsOf: URL(fileURLWithPath: localPath))
@@ -687,12 +746,21 @@ extension STChatViewController: IMUIMessageMessageCollectionViewDelegate {
             }catch {
                 
             }
+        }else if message.type == MessageBodyType.File.rawValue {
             
+            let model = Mapper<MessageBodyModel>().map(JSONString: message.text())
+            let fileModel = Mapper<MessageFileModel>().map(JSONString: (model?.Text)!)
+            let vc = STFileOptionViewController()
+            vc.model = fileModel
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
   
     func messageCollectionView(didTapHeaderImageInCell: UICollectionViewCell, model: IMUIMessageProtocol) {
-        
+        let message = model as! MyMessageModel
+        if message.fromUser.clientID().contains("user/") {
+            
+        }
     }
   
     func messageCollectionView(didTapStatusViewInCell: UICollectionViewCell, model: IMUIMessageProtocol) {
@@ -714,12 +782,6 @@ extension STChatViewController: IMUIMessageMessageCollectionViewDelegate {
         }
     }
   
-    func showToast(alert: String) {
-        
-        let toast = UIAlertView(title: alert, message: nil, delegate: nil, cancelButtonTitle: nil)
-        toast.show()
-        toast.dismiss(withClickedButtonIndex: 0, animated: true)
-    }
 }
 extension STChatViewController : MessageEventCellDelegate {
     
@@ -729,7 +791,7 @@ extension STChatViewController : MessageEventCellDelegate {
         let model = Mapper<MessageOrderModel>().map(JSONString: eventText)
         vc.orderNo = model?.ContractNo
         vc.sendBlock = { [weak self] model in
-            self?.sendProtocol(with : model!)
+            self?.sendProtocol(with: model!)
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -750,19 +812,37 @@ extension STChatViewController : MQTTClientDefaultDelegate {
     //消息
     func messageReceived(messageModel: MessageModel, topic: String) {
         //消息展示刷新
-        self.updateMessageList(messageModel: messageModel, topic: topic)
+        let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
+        let serverId = UserDefaults.standard.object(forKey: EmakeUserServiceID) as! String
+        let MQTTClienID = String(format: "customer/%@/%@", arguments: [storeId,serverId])
         var user = MyUser()
+        let chatroom = String(format: "chatroom/%@/%@", arguments: [storeId,self.userId!])
+        if chatroom != topic{
+            return
+        }
+        self.updateMessageList(messageModel: messageModel, topic: topic)
         if messageModel.From?.ClientID == MQTTClienID {
             user = getMyUserInfo()
         }else{
-            user.userName = messageModel.From?.DisplayName ?? ""
-            if messageModel.From?.Avatar == nil {
-                user.userAvata = ""
-            }else{
-                user.userAvata = messageModel.From?.Avatar
+            if (messageModel.From?.ClientID?.contains("user/"))! {
+                user.userAvata = self.userAvatar
+                if self.userRemarkName != nil && self.userRemarkName?.count != 0 {
+                   user.userName = self.userRemarkName
+                }else{
+                    user.userName = self.userName
+                }
+                user.userIdString = self.userId
+                user.isOutGoing = false
+            }else {
+                user.userName = messageModel.From?.DisplayName ?? ""
+                if messageModel.From?.Avatar == nil {
+                    user.userAvata = ""
+                }else{
+                    user.userAvata = messageModel.From?.Avatar
+                }
+                user.isOutGoing = false
+                user.userClientId = messageModel.From?.ClientID
             }
-            user.isOutGoing = false
-            user.userClientId = messageModel.From?.ClientID
         }
         switch messageModel.MessageBody?.Type{
         case MessageBodyType.Text.rawValue:
@@ -837,7 +917,7 @@ extension STChatViewController : MQTTClientDefaultDelegate {
                 self.messageCollectionView.addMessageOrder(with: message)
             }
         case MessageBodyType.Order.rawValue:
-            let message = MessageEventModel.init(msgId: messageModel.MessageId!,messageId:messageModel.MessageID!, eventText: (messageModel.MessageBody?.Text)!, sendTime: "2018-4-6")
+            let message = MessageEventModel.init(msgId: messageModel.MessageId!,messageId:messageModel.MessageID!, eventText: (messageModel.MessageBody?.Text)!, sendTime: String(format: "%d", arguments: [messageModel.Timestamp!]))
             if self.messageCollectionView.chatDataManager.allMsgidArr.contains(messageModel.MessageId!){
                 self.messageCollectionView.updateMessage(with: message)
             }else{
@@ -852,6 +932,13 @@ extension STChatViewController : MQTTClientDefaultDelegate {
             }
         case MessageBodyType.File.rawValue:
             let message = MyMessageModel(fileJsonString: (messageModel.MessageBody?.toJSONString())!, isOutGoing: user.isOutGoing!, isNeedShowTime: false, msgId: messageModel.MessageId!, messageID: messageModel.MessageID!, user: user, messageStatus: .success)
+            if self.messageCollectionView.chatDataManager.allMsgidArr.contains(messageModel.MessageId!){
+                self.messageCollectionView.updateMessage(with: message)
+            }else{
+                self.messageCollectionView.addMessageOrder(with: message)
+            }
+        case MessageBodyType.SuperGroup.rawValue:
+            let message = MessageSuperGroupModel.init(msgId: messageModel.MessageId!,messageId:messageModel.MessageID!, eventText: (messageModel.MessageBody?.Text)!, sendTime: String(format: "%d", arguments: [messageModel.Timestamp!]))
             if self.messageCollectionView.chatDataManager.allMsgidArr.contains(messageModel.MessageId!){
                 self.messageCollectionView.updateMessage(with: message)
             }else{
@@ -916,7 +1003,6 @@ extension STChatViewController : MQTTClientDefaultDelegate {
     
     func updateMessageList(messageModel: MessageModel, topic: String) {
         
-        
         let chatList = RealmChatListData()
         chatList.chatRoomID = topic
         let part = topic.components(separatedBy: "/")
@@ -924,17 +1010,19 @@ extension STChatViewController : MQTTClientDefaultDelegate {
         if part.count == 3 {
             clientId = "user/" + part[2]
         }
+        let listData = RealmChatTool.getChatList(clientId: clientId)
         let messageBodyText = messageModel.MessageBody?.toJSONString(prettyPrint: true)
         chatList.userName = self.userName ?? ""
         chatList.userAvata = self.userAvatar ?? ""
         chatList.userPhone = self.userPhone ?? ""
         chatList.userType = self.userType ?? ""
+        chatList.userRemarkName = self.userRemarkName ?? ""
         chatList.clientId = clientId
         chatList.message =  messageBodyText ?? ""
         chatList.sendTime = String(format: "%d", arguments: [messageModel.Timestamp!])
         chatList.groupInfo = messageModel.From?.Group ?? ""
         chatList.messageType = messageModel.MessageBody?.Type
-        chatList.messageCount = "0"
+        chatList.messageCount = listData?.messageCount
         if self.userId == part[2]{
             RealmChatTool.insertChatListData(by: chatList)
         }
@@ -986,6 +1074,8 @@ extension STChatViewController : STAlertViewDelegate {
         let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
         let topic = "chatroom/" + storeId + "/" + (self.userId)!
         MQTTClientDefault.shared().unSubcribeTo(topic: topic)
+        print(self.userId!)
+        self.endBlock?(self.userId!)
         self.navigationController?.popViewController(animated: true)
     }
 }

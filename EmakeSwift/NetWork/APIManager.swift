@@ -33,6 +33,8 @@ enum APIManager {
     case getQuickReplay()
     case getContractPDF(parameter:NSDictionary)
     case getSystemNews(parameter:NSDictionary)
+    case getSuperGroup(parameter:NSDictionary)
+    case getUserInfo(parameter:NSDictionary)
 }
 extension APIManager: TargetType{
     
@@ -78,6 +80,10 @@ extension APIManager: TargetType{
             return EmakeAPI_APPContractPDF
         case .getSystemNews(_):
             return EmakeAPI_StoreSystemNews
+        case .getSuperGroup(_):
+            return EmakeAPI_APPSuperGroup
+        case .getUserInfo(_):
+            return EmakeAPI_StoreServerGetUserInfo
         }
     }
 
@@ -116,6 +122,10 @@ extension APIManager: TargetType{
         case .getContractPDF:
             return .get
         case .getSystemNews(_):
+            return .get
+        case .getSuperGroup(_):
+            return .get
+        case .getUserInfo(_):
             return .get
         }
         
@@ -167,6 +177,12 @@ extension APIManager: TargetType{
             params = param as! [String : Any]
             return .requestCompositeData(bodyData: "".data(using: String.Encoding.utf8)!, urlParameters: params)
         case .getSystemNews(let param):
+            params = param as! [String : Any]
+            return .requestCompositeData(bodyData: "".data(using: String.Encoding.utf8)!, urlParameters: params)
+        case .getSuperGroup(let param):
+            params = param as! [String : Any]
+            return .requestCompositeData(bodyData: "".data(using: String.Encoding.utf8)!, urlParameters: params)
+        case .getUserInfo(let param):
             params = param as! [String : Any]
             return .requestCompositeData(bodyData: "".data(using: String.Encoding.utf8)!, urlParameters: params)
         default:

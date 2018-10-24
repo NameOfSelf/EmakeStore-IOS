@@ -28,16 +28,16 @@ PODS:
   - MQTTClient/Manager (0.10.2):
     - MQTTClient/Min
   - MQTTClient/Min (0.10.2)
-  - ObjectMapper (3.1.0)
+  - ObjectMapper (3.3.0)
   - "ObjectMapper+Realm (0.5)":
     - ObjectMapper
     - RealmSwift
   - ReachabilitySwift (4.1.0)
-  - Realm (3.1.0):
-    - Realm/Headers (= 3.1.0)
-  - Realm/Headers (3.1.0)
-  - RealmSwift (3.1.0):
-    - Realm (= 3.1.0)
+  - Realm (3.11.1):
+    - Realm/Headers (= 3.11.1)
+  - Realm/Headers (3.11.1)
+  - RealmSwift (3.11.1):
+    - Realm (= 3.11.1)
   - Result (3.2.4)
   - RSKPlaceholderTextView (3.0.0)
   - RxCocoa (4.1.1):
@@ -65,10 +65,8 @@ DEPENDENCIES:
   - MJRefresh
   - Moya/RxSwift (~> 10.0)
   - MQTTClient
-  - ObjectMapper (~> 3.1)
   - "ObjectMapper+Realm"
   - ReachabilitySwift
-  - RealmSwift
   - RSKPlaceholderTextView
   - RxCocoa (~> 4.1.1)
   - SDWebImage (~> 4.0)
@@ -130,11 +128,11 @@ SPEC CHECKSUMS:
   MJRefresh: b48380ae2b927b46c4ef000de9adb8dc748e1df7
   Moya: 9e621707ff754eeb51ff3ec51a3d54e517c0733a
   MQTTClient: e8d3d642f28548296511b3af4e2cef12874071ce
-  ObjectMapper: 20505058f54e5c3ca69e1d6de9897d152a5369a6
+  ObjectMapper: b612bf8c8e99c4dc0bb6013a51f7c27966ed5da9
   "ObjectMapper+Realm": 3188789fb77c189c7a83cb625333a607eb61a08f
   ReachabilitySwift: 6849231cd4e06559f3b9ef4a97a0a0f96d41e09f
-  Realm: 09513d7c054678d65cd02ce09871f805b0d758ac
-  RealmSwift: e868fee9b10e5490ad94b6b6ecd9027944da1824
+  Realm: 037c5919b9ceb59d6beed5d3b031096856b119b3
+  RealmSwift: c9580133e73ef40ed340401af2dbc9a5790dfea7
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   RSKPlaceholderTextView: 0ce73a19998e236323b3f1f16bf4a4e4a76c2c28
   RxCocoa: fd0862fd2df95fa55562ad28ffd2522c25eb4a85
@@ -147,6 +145,6 @@ SPEC CHECKSUMS:
   TZImagePickerController: c0c7651a0b6ce88e6b800aac7d5da61db1962f51
   YBPopupMenu: 6efb286385d95ba5f97c58b8464ec873645e8764
 
-PODFILE CHECKSUM: 1258895114b5ff2b7a201a22baf1fa163ae66cb3
+PODFILE CHECKSUM: a83dfdcf23caa0e9a5adc755cab9ba8090f22909
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.0.beta.2

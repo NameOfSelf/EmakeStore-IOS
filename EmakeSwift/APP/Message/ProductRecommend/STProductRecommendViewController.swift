@@ -160,7 +160,8 @@ extension STProductRecommendViewController : UITableViewDelegate,UITableViewData
         cell?.backgroundColor = .white
         self.rightDataArray = model.CategorySeries
         if (self.rightDataArray?.count)! <= 0 {
-           
+            self.rightDataArray?.removeAll()
+            self.rigthCollectionView?.reloadData()
         }else{
             self.rigthCollectionView?.reloadData()
         }
@@ -249,6 +250,5 @@ extension STProductRecommendViewController : UICollectionViewDelegate,UICollecti
         let imageselect = cell?.viewWithTag(100) as! UIImageView
         imageselect.image = UIImage(named: "select_no")
     }
-    
-    
+
 }

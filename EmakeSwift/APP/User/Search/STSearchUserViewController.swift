@@ -91,6 +91,15 @@ class STSearchUserViewController: BaseViewController {
         vc.userAvatar = userModel.HeadImageUrl
         vc.userPhone = userModel.MobileNumber
         vc.userType = userModel.UserIdentity
+        if (userModel.RemarkName == nil || userModel.RemarkName?.count == 0) && (userModel.RemarkCompany == nil || userModel.RemarkCompany?.count == 0){
+            vc.userRemarkName = ""
+        }else{
+            vc.userRemarkName = String(format: "%@ %@", arguments: [userModel.RemarkCompany ?? "",userModel.RemarkName ?? ""])
+        }
+        vc.endBlock = {  text in
+            let deleteClientId = "user/" + text
+            RealmChatTool.deleteChatListData(with: deleteClientId)
+        }
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

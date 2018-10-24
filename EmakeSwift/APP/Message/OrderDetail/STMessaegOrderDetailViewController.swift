@@ -105,7 +105,6 @@ class STMessaegOrderDetailViewController: BaseViewController {
         
         let parameter : NSDictionary? = ["ContractNo":self.orderNo ?? ""]
         viewModelAnother.getContractAgreement(self, parameters: parameter!) { (model) in
-            
             self.contractModel = model as? ContractModel
         }
     }
@@ -135,12 +134,27 @@ class STMessaegOrderDetailViewController: BaseViewController {
         body.Type = "MutilePart"
         if self.contractModel?.Products == nil {
             self.view.makeToast("该商品没有技术协议", duration: 1.0, position: CSToastPositionCenter)
+            return
         }else{
             body.Contract = self.orderModel?.ContractNo
             body.Url = String(format: "%@%@", arguments: [self.contractModel?.MessageBody?.ContractHeader?.Url ?? "",self.orderModel?.ContractNo ?? ""])
         }
-        self.sendBlock!(body)
-        self.navigationController?.popViewController(animated: true)
+        let vc = STReuseableWebViewController()
+        vc.url = body.Url!
+        vc.webViewType = .saleContract
+        vc.rightButtonTitle = "发送"
+        vc.messageBody = body
+        vc.sendBlock = { model in
+            self.sendBlock!(model)
+            for vc in (self.navigationController?.viewControllers)! {
+                if vc.isKind(of: STChatViewController.self) {
+                    self.navigationController?.popToViewController(vc, animated: true)
+                    break
+                }
+            }
+            
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func sendProtocolAndContract() {
@@ -159,8 +173,22 @@ class STMessaegOrderDetailViewController: BaseViewController {
         body.Type = "MutilePart"
         body.Contract = self.orderModel?.ContractNo
         body.Url = String(format: "%@%@", arguments: [self.contractModel?.MessageBody?.ContractTotal?.Url ?? "",self.orderModel?.ContractNo ?? ""])
-        self.sendBlock!(body)
-        self.navigationController?.popViewController(animated: true)
+        let vc = STReuseableWebViewController()
+        vc.url = body.Url!
+        vc.webViewType = .totalContract
+        vc.rightButtonTitle = "发送"
+        vc.messageBody = body
+        vc.sendBlock = { model in
+            self.sendBlock!(model)
+            for vc in (self.navigationController?.viewControllers)! {
+                if vc.isKind(of: STChatViewController.self) {
+                    self.navigationController?.popToViewController(vc, animated: true)
+                    break
+                }
+            }
+            
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func goSendProtocolVC(index:NSInteger) {
@@ -186,7 +214,7 @@ class STMessaegOrderDetailViewController: BaseViewController {
         body.Url = String(format: "%@%@/%@", arguments: [self.contractModel?.MessageBody?.ContractAgreement?.Url ?? "",self.orderModel?.ContractNo ?? "",goods?.MainGoodsCode ?? ""])
         let vc = STReuseableWebViewController()
         vc.url = String(format: "%@%@/%@", arguments: [self.contractModel?.MessageBody?.ContractAgreement?.Url ?? "",self.orderModel?.ContractNo ?? "",goods?.MainGoodsCode ?? ""])
-        vc.webViewType = .contractPreview
+        vc.webViewType = .protocolPreview
         vc.rightButtonTitle = "发送"
         vc.messageBody = body
         vc.sendBlock = { model in
@@ -259,7 +287,7 @@ extension STMessaegOrderDetailViewController : UITableViewDelegate,UITableViewDa
         }else if self.orderModel?.OrderState == "2"{
             orderType = .生产完成
         }else if self.orderModel?.OrderState == "3"{
-            orderType = .已发货
+            orderType = .发货中
         }else if self.orderModel?.OrderState == "-2"{
             orderType = .待签订
         }

@@ -128,10 +128,15 @@ extension STFileMessageListViewController : UITableViewDelegate,UITableViewDataS
         vc.userPhone = userModel.userPhone
         vc.userId = userId
         vc.userType = userModel.userType
+        vc.userRemarkName = userModel.userRemarkName
         vc.isUploadFile = true
         vc.filePath = self.filePath
         vc.fileName = self.fileName
         vc.fileData = self.fileData
+        vc.endBlock = { [weak self] text in
+            let deleteClientId = "user/" + text
+            RealmChatTool.deleteChatListData(with: deleteClientId)
+        }
         if clientSelf == userModel.clientId {
             vc.userName = "平台客服"
             vc.isChatWithOffcial = true

@@ -38,9 +38,12 @@ let EmakeResponseData = "Data"
 /*
  Emake地址
  */
-let EmakeHost = "http://mallapitest.emake.cn/"
+//测试环境
+//let EmakeHost = "http://mallapitest.emake.cn/"
+//生产环境
+let EmakeHost = "http://git.emake.cn:3100/"
+//正式环境
 //let EmakeHost = "http://mallapi.emake.cn/"
-let EmakeHostTest = "http://192.168.0.191:3100/"
 
 
 /*
@@ -83,3 +86,7 @@ let EmakeAPI_WebQuickReplay = "web/quickreplay"
 let EmakeAPI_APPContractPDF = "web/make/contract/chat"
 //系统消息
 let EmakeAPI_StoreSystemNews = "store/servergetsystempushnews"
+//超级团列表
+let EmakeAPI_APPSuperGroup = "app/super/group"
+//查询备注
+let EmakeAPI_StoreServerGetUserInfo = "store/servergetuserinfo"

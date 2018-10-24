@@ -100,7 +100,7 @@ class STUserInfoOrderCell: UITableViewCell {
         }else if model.OrderState == "2"{
             self.orderStateLabel?.text = "生产完成"
         }else if model.OrderState == "3"{
-            self.orderStateLabel?.text = "已发货"
+            self.orderStateLabel?.text = "发货中"
         }else if model.OrderState == "-2"{
             self.orderStateLabel?.text = "待签订"
         }

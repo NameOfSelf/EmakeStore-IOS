@@ -128,24 +128,28 @@ class STMessageListTableViewCell: UITableViewCell {
             serverID = UserDefaults.standard.object(forKey: EmakeUserServiceID) as! String
         }
         let clientSelf = String(format: "user/%@", arguments: [serverID])
-        
-        if data.userName == nil{
-            if data.userPhone != nil {
-               self.nameLabel?.text = "用户" + (data.userPhone![(data.userPhone?.count)!-4..<(data.userPhone?.count)!])
-            }else{
-                self.nameLabel?.text = ""
-            }
-        }else{
-            if (data.userName?.count)! <= 0 {
+        if data.userRemarkName != nil && data.userRemarkName?.count != 0 {
+            self.nameLabel?.text = data.userRemarkName
+        }else {
+            if data.userName == nil{
                 if data.userPhone != nil {
                     self.nameLabel?.text = "用户" + (data.userPhone![(data.userPhone?.count)!-4..<(data.userPhone?.count)!])
                 }else{
                     self.nameLabel?.text = ""
                 }
             }else{
-                self.nameLabel?.text = data.userName
+                if (data.userName?.count)! <= 0 {
+                    if data.userPhone != nil {
+                        self.nameLabel?.text = "用户" + (data.userPhone![(data.userPhone?.count)!-4..<(data.userPhone?.count)!])
+                    }else{
+                        self.nameLabel?.text = ""
+                    }
+                }else{
+                    self.nameLabel?.text = data.userName
+                }
             }
         }
+        
         self.headImage?.sd_setImage(with: URL(string: data.userAvata ?? ""), placeholderImage: UIImage(named: "yonghuyouxiangL"))
         if clientSelf == data.clientId {
             self.nameLabel?.text = "平台客服"

@@ -100,6 +100,14 @@
 		5E168207216E0367002520FA /* JZUserNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E168202216E0367002520FA /* JZUserNotification.m */; };
 		5E168208216E0367002520FA /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5E168204216E0367002520FA /* Info.plist */; };
 		5E1EBDF1207C8F0600463863 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1EBDF0207C8F0600463863 /* LoginViewController.swift */; };
+		5E20217F217DB0C300B42883 /* STFileOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E20217A217DB0C200B42883 /* STFileOptionViewController.swift */; };
+		5E202180217DB0C300B42883 /* STGroupPurchaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E20217C217DB0C300B42883 /* STGroupPurchaseViewModel.swift */; };
+		5E202181217DB0C300B42883 /* STGroupPurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E20217D217DB0C300B42883 /* STGroupPurchaseModel.swift */; };
+		5E202182217DB0C300B42883 /* STGroupPurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E20217E217DB0C300B42883 /* STGroupPurchaseViewController.swift */; };
+		5E202184217DB0E500B42883 /* STMessageGroupPurchaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E202183217DB0E500B42883 /* STMessageGroupPurchaseCell.swift */; };
+		5E202186217DB2FA00B42883 /* MessageEventSuperGroupCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E202185217DB2FA00B42883 /* MessageEventSuperGroupCollectionViewCell.swift */; };
+		5E202188217EE80700B42883 /* STMessageListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E202187217EE80700B42883 /* STMessageListViewModel.swift */; };
+		5E20218A217EF53E00B42883 /* STMesageListUserInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E202189217EF53E00B42883 /* STMesageListUserInfoModel.swift */; };
 		5E263ADC215F923200C985A9 /* RealmChatData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E263ADB215F923200C985A9 /* RealmChatData.swift */; };
 		5E263ADE215FA72200C985A9 /* RealmChatTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E263ADD215FA72200C985A9 /* RealmChatTool.swift */; };
 		5E281D7E2136343800D8435C /* OSSClientDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E281D7D2136343800D8435C /* OSSClientDefault.swift */; };
@@ -347,6 +355,14 @@
 		5E168203216E0367002520FA /* JZUserNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JZUserNotification.h; sourceTree = "<group>"; };
 		5E168204216E0367002520FA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5E1EBDF0207C8F0600463863 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		5E20217A217DB0C200B42883 /* STFileOptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STFileOptionViewController.swift; sourceTree = "<group>"; };
+		5E20217C217DB0C300B42883 /* STGroupPurchaseViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STGroupPurchaseViewModel.swift; sourceTree = "<group>"; };
+		5E20217D217DB0C300B42883 /* STGroupPurchaseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STGroupPurchaseModel.swift; sourceTree = "<group>"; };
+		5E20217E217DB0C300B42883 /* STGroupPurchaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STGroupPurchaseViewController.swift; sourceTree = "<group>"; };
+		5E202183217DB0E500B42883 /* STMessageGroupPurchaseCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STMessageGroupPurchaseCell.swift; sourceTree = "<group>"; };
+		5E202185217DB2FA00B42883 /* MessageEventSuperGroupCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageEventSuperGroupCollectionViewCell.swift; sourceTree = "<group>"; };
+		5E202187217EE80700B42883 /* STMessageListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STMessageListViewModel.swift; sourceTree = "<group>"; };
+		5E202189217EF53E00B42883 /* STMesageListUserInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STMesageListUserInfoModel.swift; sourceTree = "<group>"; };
 		5E263ADB215F923200C985A9 /* RealmChatData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmChatData.swift; sourceTree = "<group>"; };
 		5E263ADD215FA72200C985A9 /* RealmChatTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmChatTool.swift; sourceTree = "<group>"; };
 		5E281D7D2136343800D8435C /* OSSClientDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSSClientDefault.swift; sourceTree = "<group>"; };
@@ -852,6 +868,24 @@
 			path = YHUserNotification;
 			sourceTree = "<group>";
 		};
+		5E202179217DB0C200B42883 /* FileOption */ = {
+			isa = PBXGroup;
+			children = (
+				5E20217A217DB0C200B42883 /* STFileOptionViewController.swift */,
+			);
+			path = FileOption;
+			sourceTree = "<group>";
+		};
+		5E20217B217DB0C300B42883 /* GroupPurchase */ = {
+			isa = PBXGroup;
+			children = (
+				5E20217C217DB0C300B42883 /* STGroupPurchaseViewModel.swift */,
+				5E20217D217DB0C300B42883 /* STGroupPurchaseModel.swift */,
+				5E20217E217DB0C300B42883 /* STGroupPurchaseViewController.swift */,
+			);
+			path = GroupPurchase;
+			sourceTree = "<group>";
+		};
 		5E281D7F2136732200D8435C /* IMUIRealm */ = {
 			isa = PBXGroup;
 			children = (
@@ -921,6 +955,7 @@
 		5E758C9F215FB3210011A06D /* View */ = {
 			isa = PBXGroup;
 			children = (
+				5E202183217DB0E500B42883 /* STMessageGroupPurchaseCell.swift */,
 				5E758CA0215FB3620011A06D /* STMessageListTableViewCell.swift */,
 				5E758CA2215FB3820011A06D /* STMessageResponseTableViewCell.swift */,
 				5EFB34EB216B8BF7009D1ADA /* STMessageOrderItemCell.swift */,
@@ -947,6 +982,7 @@
 		5E943EC9213518B600EFD24D /* IMUIEventCollectionView */ = {
 			isa = PBXGroup;
 			children = (
+				5E202185217DB2FA00B42883 /* MessageEventSuperGroupCollectionViewCell.swift */,
 				5E943ECA213518B600EFD24D /* MessageEventCollectionViewCell.swift */,
 				5EC7FB29216CB3C4005AA08E /* MessageEventTipsCollectionViewCell.swift */,
 			);
@@ -1205,6 +1241,10 @@
 			isa = PBXGroup;
 			children = (
 				5EDBECAB213FC21F004F93C5 /* STMessageListViewController.swift */,
+				5E202187217EE80700B42883 /* STMessageListViewModel.swift */,
+				5E202189217EF53E00B42883 /* STMesageListUserInfoModel.swift */,
+				5E202179217DB0C200B42883 /* FileOption */,
+				5E20217B217DB0C300B42883 /* GroupPurchase */,
 				5E31DCD92175C6580083BA1F /* SendFileMessageList */,
 				5EFB34EF216C9045009D1ADA /* SystemMessage */,
 				5E10DF8A216114B200735670 /* OrderDetail */,
@@ -1437,7 +1477,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-EmakeSwift/Pods-EmakeSwift-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-EmakeSwift/Pods-EmakeSwift-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AliyunOSSiOS/AliyunOSSiOS.framework",
 				"${BUILT_PRODUCTS_DIR}/CYLTabBarController/CYLTabBarController.framework",
@@ -1498,7 +1538,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EmakeSwift/Pods-EmakeSwift-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EmakeSwift/Pods-EmakeSwift-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9444F13BFEB6AC8095C1DF44 /* [CP] Check Pods Manifest.lock */ = {
@@ -1529,6 +1569,7 @@
 				5E14C57A215B819D0080D92A /* STLogisticsCell.swift in Sources */,
 				5E008096212520780090CB8A /* IMUITextView.swift in Sources */,
 				5E10DF8C216114CB00735670 /* STMessaegOrderDetailViewController.swift in Sources */,
+				5E20218A217EF53E00B42883 /* STMesageListUserInfoModel.swift in Sources */,
 				5E3B850D215E45AC00D63C0A /* STProductRecommendViewController.swift in Sources */,
 				5EB6FF1D214B90D20008D9CF /* STOrderDetailTopCell.swift in Sources */,
 				5EB6FEBF214605830008D9CF /* IMUINewFeatureView.swift in Sources */,
@@ -1553,6 +1594,7 @@
 				5EB6FEE521490F360008D9CF /* STOrderBottomCell.swift in Sources */,
 				5E168205216E0367002520FA /* NotificationViewController.m in Sources */,
 				5EB6FECA2146ABEB0008D9CF /* STMineTableHeaderView.swift in Sources */,
+				5E202184217DB0E500B42883 /* STMessageGroupPurchaseCell.swift in Sources */,
 				5E72C92B21421B0C00FCF0EA /* STActionSheetView.swift in Sources */,
 				5EF66C0D21539B7E0045A5A3 /* STUserInfoModel.swift in Sources */,
 				5E66DFC121508BF8001CF105 /* RegisterViewModel.swift in Sources */,
@@ -1566,6 +1608,7 @@
 				5EA0B222201EAB7200BCF189 /* RequestPlugin.swift in Sources */,
 				5E008085212520780090CB8A /* IMUIMessageModel.swift in Sources */,
 				5EB2F184215F51E200025078 /* MessageOrderModel.swift in Sources */,
+				5E202188217EE80700B42883 /* STMessageListViewModel.swift in Sources */,
 				5E0080C0212520780090CB8A /* IMUIPhotoCaptureDelegate.swift in Sources */,
 				5E0080BA212520780090CB8A /* IMUIGalleryCell.swift in Sources */,
 				5E0080A2212520780090CB8A /* BundleInputViewExtension.swift in Sources */,
@@ -1584,6 +1627,7 @@
 				5E3B8511215E4C2000D63C0A /* STProductRecommendModel.swift in Sources */,
 				5E52ABA8207D991400226C70 /* UIConfig.swift in Sources */,
 				5EB6D54B214CCD59003ECB95 /* STReplyViewController.swift in Sources */,
+				5E202186217DB2FA00B42883 /* MessageEventSuperGroupCollectionViewCell.swift in Sources */,
 				5E281D7E2136343800D8435C /* OSSClientDefault.swift in Sources */,
 				5E52ABAE207DDC5700226C70 /* LoginModel.swift in Sources */,
 				5E943EC62135179E00EFD24D /* STChatViewController.swift in Sources */,
@@ -1622,6 +1666,7 @@
 				5EA0B1FD201DB50C00BCF189 /* UIViewController+Additions.swift in Sources */,
 				5EDBECB0213FC3D6004F93C5 /* STOrderListViewController.swift in Sources */,
 				5E2EED9821547BDC00322E13 /* ResopnseViewModel.swift in Sources */,
+				5E20217F217DB0C300B42883 /* STFileOptionViewController.swift in Sources */,
 				5E008098212520780090CB8A /* IMUIVoiceMessageContentView.swift in Sources */,
 				5E008083212520780090CB8A /* UIImageMessageListExtension.swift in Sources */,
 				5E008099212520780090CB8A /* IMUITextMessageContentView.swift in Sources */,
@@ -1629,6 +1674,7 @@
 				5E008090212520780090CB8A /* IMUIChatDataManager.swift in Sources */,
 				5E0080CA212520780090CB8A /* StringExtension.swift in Sources */,
 				5E0080C5212520780090CB8A /* UIColorExtension.swift in Sources */,
+				5E202180217DB0C300B42883 /* STGroupPurchaseViewModel.swift in Sources */,
 				5EA0B205201DB62B00BCF189 /* BaseViewController.swift in Sources */,
 				5EB6FEBB214604A30008D9CF /* IMUINewInputView.swift in Sources */,
 				5E008093212520780090CB8A /* IMUIMessageStatusView.swift in Sources */,
@@ -1668,6 +1714,7 @@
 				5E0080A5212520780090CB8A /* IMUIRecordVoiceHelper.swift in Sources */,
 				5E14C575215B6A2A0080D92A /* STOrderDetailItemBottomCell.swift in Sources */,
 				5E0080CC212520780090CB8A /* DateExtension.swift in Sources */,
+				5E202181217DB0C300B42883 /* STGroupPurchaseModel.swift in Sources */,
 				5E3B8509215DFE8D00D63C0A /* UIImage+Addtions.swift in Sources */,
 				5E4B71302123BE430032AF1E /* Tools.swift in Sources */,
 				5E0080BB212520780090CB8A /* IMUIEmojiItemCell.swift in Sources */,
@@ -1679,6 +1726,7 @@
 				5E4B7129212267640032AF1E /* Single+ObjectMapper.swift in Sources */,
 				5E008082212520780090CB8A /* BundleMessageListExtension.swift in Sources */,
 				5EB6FEDA2148DBE90008D9CF /* STUserInfoCommonCell.swift in Sources */,
+				5E202182217DB0C300B42883 /* STGroupPurchaseViewController.swift in Sources */,
 				5E3B8515215F090500D63C0A /* STMessageConnvientReplyModel.swift in Sources */,
 				5E3B850F215E494700D63C0A /* STProductRecommendViewModel.swift in Sources */,
 				5EB6FEC5214643900008D9CF /* IMUINewInputViewDelegate.swift in Sources */,

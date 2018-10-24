@@ -3,7 +3,6 @@ use_frameworks!
 
 target 'EmakeSwift' do
     pod 'CYLTabBarController'
-    pod 'ObjectMapper', '~> 3.1'
     pod 'Alamofire', '~> 4.5'
     pod 'Moya/RxSwift', '~> 10.0'
     pod 'SnapKit', '~> 4.0.0'
@@ -12,7 +11,7 @@ target 'EmakeSwift' do
     pod 'SDWebImage', '~> 4.0'
     pod 'Toast'
     pod 'IQKeyboardManagerSwift'
-    pod 'RealmSwift'
+    pod 'RealmSwift', '~> 3.11.1'
     pod 'MQTTClient'
     pod 'SVGKit', :git => 'https://github.com/SVGKit/SVGKit.git', :branch => '2.x'
     pod 'AliyunOSSiOS'

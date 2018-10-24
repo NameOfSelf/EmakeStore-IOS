@@ -32,7 +32,6 @@ public class IMUIProductContentView: UIView, IMUIMessageContentViewProtocol {
     }
     public func layoutContentView(message: IMUIMessageModelProtocol) {
         
-        print("\(message.text())")
         let model = Mapper<ProductItemModel>().map(JSONString: message.text())
         imageView.frame = CGRect(x: 9, y:7, width: 65, height:59)
         productName.font = UIFont.systemFont(ofSize: 14)
@@ -43,7 +42,9 @@ public class IMUIProductContentView: UIView, IMUIMessageContentViewProtocol {
         productPrice.frame = CGRect(x: 80, y:32, width: 180, height:25)
         productName.text = model?.GoodsSeriesName
         productPrice.text =  model?.GoodsPriceValue
-        imageView.sd_setImage(with:NSURL.init(string: (model?.GoodsImageUrl)!)! as URL , placeholderImage:nil)
+        if model?.GoodsImageUrl != nil && model?.GoodsImageUrl?.count != 0{
+            imageView.sd_setImage(with:NSURL.init(string: (model?.GoodsImageUrl)!)! as URL , placeholderImage:nil)
+        }
     }
 
 }

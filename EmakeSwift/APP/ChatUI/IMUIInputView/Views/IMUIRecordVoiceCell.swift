@@ -88,7 +88,6 @@ class IMUIRecordVoiceCell: UICollectionViewCell, IMUINewFeatureCellProtocol {
   
   // -MARK: RecordVoice
   @IBAction func finishiRecordVoiceCallback(_ sender: Any) {
-    self.finishiRecorderCache = recordHelper.finishRecordingCompletion()
     self.finishRecordVoice()
   }
   
@@ -122,16 +121,18 @@ class IMUIRecordVoiceCell: UICollectionViewCell, IMUINewFeatureCellProtocol {
 
   }
   
-  func finishRecordVoice() {
-    if AVAudioSession.sharedInstance().recordPermission() == .granted {
-      self.swtichToPlayModeBtn.isHidden = true
-      self.cancelVoiceBtn.isHidden = true
-      self.resetSubViewsStyle()
-      let finishiRecorder = recordHelper.finishRecordingCompletion()
-        self.featureDelegate?.didRecordVideo(with: finishiRecorder.voiceFilePath, durationTime: finishiRecorder.duration)
+    func finishRecordVoice() {
+        if AVAudioSession.sharedInstance().recordPermission() == .granted {
+            self.swtichToPlayModeBtn.isHidden = true
+            self.cancelVoiceBtn.isHidden = true
+            self.resetSubViewsStyle()
+            
+            let finishiRecorder = recordHelper.finishRecordingCompletion()
+            //      self.inputViewDelegate?.finishRecordVoice?(finishiRecorder.voiceFilePath, durationTime: finishiRecorder.duration)
+            self.featureDelegate?.didRecordVideo(with: finishiRecorder.voiceFilePath, durationTime: finishiRecorder.duration)
+        }
+        
     }
-    
-  }
   
   func resetSubViewsStyle() {
     
@@ -276,7 +277,6 @@ class IMUIRecordVoiceCell: UICollectionViewCell, IMUINewFeatureCellProtocol {
         return
       }
       
-      self.finishiRecorderCache = recordHelper.finishRecordingCompletion()
       self.finishRecordVoice()
     }
   }

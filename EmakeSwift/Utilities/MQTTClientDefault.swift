@@ -45,10 +45,12 @@ class MQTTClientDefault: NSObject {
     public func connectToHost(withServerId:String,storeID:String){
         let CMDTopic = "customer/" + storeID + "/" + withServerId
         let ServerTopic = "chatroom/" + storeID + "/" + withServerId
+        
         self.session?.clientId = CMDTopic
         self.session?.connect(toHost: MQTT_IP, port: UInt32(MQTT_PORT), usingSSL: false, connectHandler: { (error) in
             if error == nil{
                 //订阅MQTT_CMDTopic
+                print("订阅CMDTopic---\(CMDTopic)")
                 self.subcribeTo(topic: CMDTopic)
                 //订阅MQTT_ServerTopic
                 self.subcribeTo(topic: ServerTopic)
@@ -150,9 +152,9 @@ extension MQTTClientDefault: MQTTSessionDelegate{
                     chatList.userAvata = listData?.userAvata
                     chatList.userPhone = listData?.userPhone
                     chatList.userType = listData?.userType
+                    chatList.userRemarkName = listData?.userRemarkName
                 }
             }
-            print(listData?.messageCount)
             let count = Int(listData?.messageCount ?? "0")! + 1
             print(String(format: "%d", arguments: [count]))
             chatList.messageCount = String(format: "%d", arguments: [count])

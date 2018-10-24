@@ -18,6 +18,7 @@ class STOrderDetailTopCell: UITableViewCell {
     var orderNoLabel : UILabel?
     var dateLabel : UILabel?
     var taxLabel : UILabel?
+    var superGroupLabel : UILabel?
     var addressView : UIView?
     var addressImageView : UIImageView?
     var addressName : UILabel?
@@ -62,10 +63,10 @@ class STOrderDetailTopCell: UITableViewCell {
         
         
         switch orderType {
-        case .已发货:
+        case .发货中:
             self.statusImageView?.image = UIImage(named: "icon_order_status_ deliver")
-            self.statusLabel?.text = "已发货"
-            self.statusMoreLabel?.text = "订单已发货，请耐心等待"
+            self.statusLabel?.text = "发货中"
+            self.statusMoreLabel?.text = "订单发货中，请耐心等待"
         case .待签订:
             self.statusImageView?.image = UIImage(named: "icon_order_status_Contract_not_yet_signed")
             self.statusLabel?.text = "待签订"
@@ -98,9 +99,17 @@ class STOrderDetailTopCell: UITableViewCell {
         self.taxLabel?.text = "含税"
         self.taxLabel?.textAlignment = .center
         self.taxLabel?.backgroundColor = TextColor_FFCC00
-        self.taxLabel?.font = AdaptFont(actureValue: 6)
+        self.taxLabel?.font = AdaptFont(actureValue: 8)
         self.orderView?.addSubview(self.taxLabel!)
         
+        
+        self.superGroupLabel = UILabel()
+        self.superGroupLabel?.textColor = .white
+        self.superGroupLabel?.text = "超级团"
+        self.superGroupLabel?.textAlignment = .center
+        self.superGroupLabel?.backgroundColor = TextColor_F8695D
+        self.superGroupLabel?.font = AdaptFont(actureValue: 8)
+        self.contentView.addSubview(self.superGroupLabel!)
         
         self.dateLabel = UILabel()
         self.dateLabel?.textColor = TextColor_666666
@@ -173,8 +182,15 @@ class STOrderDetailTopCell: UITableViewCell {
         self.taxLabel?.snp.makeConstraints({ (make) in
             make.left.equalTo((self.orderNoLabel?.snp.right)!).offset(WidthRate(actureValue: 2))
             make.centerY.equalTo((self.orderView?.snp.centerY)!)
-            make.height.equalTo(HeightRate(actureValue: 12))
-            make.width.equalTo(WidthRate(actureValue: 22))
+            make.height.equalTo(HeightRate(actureValue: 14))
+            make.width.equalTo(WidthRate(actureValue: 26))
+        })
+        
+        self.superGroupLabel?.snp.makeConstraints({ (make) in
+            make.left.equalTo((self.taxLabel?.snp.right)!).offset(WidthRate(actureValue: 5))
+            make.centerY.equalTo((self.orderView?.snp.centerY)!)
+            make.height.equalTo(HeightRate(actureValue: 14))
+            make.width.equalTo(WidthRate(actureValue: 30))
         })
         
         self.dateLabel?.snp.makeConstraints({ (make) in
@@ -222,8 +238,13 @@ class STOrderDetailTopCell: UITableViewCell {
         }else{
             self.taxLabel?.isHidden = true
         }
+        if model.SuperGroupDetailId == nil || model.SuperGroupDetailId?.count == 0{
+            self.superGroupLabel?.isHidden = true
+        }else{
+            self.superGroupLabel?.isHidden = false
+        }
         self.dateLabel?.text = model.InDate
-        if model.Address == nil {
+        if model.Address == nil || model.Address?.count == 0{
             self.addressView?.isHidden = true
         }else{
             self.addressView?.isHidden = false

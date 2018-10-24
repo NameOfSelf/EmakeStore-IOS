@@ -34,9 +34,15 @@ class STUserListViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "用户"
+        NotificationCenter.default.addObserver(self, selector: #selector(loginUserRefresh), name: NSNotification.Name(rawValue: NotificationLoginRefresh), object: nil)
         // Do any additional setup after loading the view.
     }
 
+    
+    @objc func loginUserRefresh() {
+        
+    }
+    
     override func configSubviews() {
         
         self.topView = UIView()
@@ -160,7 +166,7 @@ class STUserListViewController: BaseViewController {
             viewModel.getUsersList(self, pamameters: parameters, successBlock: { (userList) in
                 let users = userList as! [STUserModel]
                 if users.count < 10{
-                    self.isMaxPageTwo = true
+                    self.isMaxPageOne = true
                     table.mj_footer.endRefreshingWithNoMoreData()
                 }
                 self.dataListOne?.append(contentsOf: users)
@@ -202,10 +208,10 @@ class STUserListViewController: BaseViewController {
         let storyboard = UIStoryboard.init(name: "Chat", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "Chat") as! STChatViewController
         vc.userId = userModel.UserId
-        if userModel.NickName != nil {
+        if (userModel.NickName != nil) && (userModel.NickName?.count != 0) {
             vc.userName = userModel.NickName
         }else{
-            if userModel.RealName == nil {
+            if userModel.RealName == nil || userModel.RealName?.count == 0{
                 vc.userName = "用户" + userModel.MobileNumber![(userModel.MobileNumber?.count)!-4..<(userModel.MobileNumber?.count)!]
             }else{
                 vc.userName = userModel.RealName
@@ -214,6 +220,15 @@ class STUserListViewController: BaseViewController {
         vc.userAvatar = userModel.HeadImageUrl
         vc.userPhone = userModel.MobileNumber
         vc.userType = userModel.UserIdentity
+        if (userModel.RemarkName == nil || userModel.RemarkName?.count == 0) && (userModel.RemarkCompany == nil || userModel.RemarkCompany?.count == 0){
+            vc.userRemarkName = ""
+        }else{
+            vc.userRemarkName = String(format: "%@ %@", arguments: [userModel.RemarkCompany ?? "",userModel.RemarkName ?? ""])
+        }
+        vc.endBlock = {  text in
+            let deleteClientId = "user/" + text
+            RealmChatTool.deleteChatListData(with: deleteClientId)
+        }
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

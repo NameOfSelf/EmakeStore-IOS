@@ -27,6 +27,7 @@ public protocol IMUINewFeatureViewDelegate: NSObjectProtocol {
     func didSelectedProfuct()
     func didSelectedServerSwitch()
     func didSelectedEndServers()
+    func didSelectedGroupPurchase()
     func didSelectedOrder()
     func startRecordVoice()
     func didRecordVideo(with videoPath: String, durationTime: Double)

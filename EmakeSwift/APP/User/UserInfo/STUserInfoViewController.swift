@@ -125,19 +125,27 @@ extension STUserInfoViewController : UITableViewDelegate,UITableViewDataSource{
                 let storyboard = UIStoryboard.init(name: "Chat", bundle: nil)
                 let vc = storyboard.instantiateViewController(withIdentifier: "Chat") as! STChatViewController
                 vc.userId = self?.userModel?.UserId
-                if self?.userModel?.NickName != nil {
+                if self?.userModel?.NickName != nil && self?.userModel?.NickName?.count != 0{
                     vc.userName = self?.userModel?.NickName
                 }else{
-                    if self?.userModel?.RealName == nil {
+                    if self?.userModel?.RealName == nil || self?.userModel?.RealName?.count == 0{
                         vc.userName = "用户" + (self?.userModel?.MobileNumber![(self?.userModel?.MobileNumber?.count)!-4..<(self?.userModel?.MobileNumber?.count)!])!
                     }else{
                         vc.userName = self?.userModel?.RealName
                     }
                 }
-                
                 vc.userAvatar = self?.userModel?.HeadImageUrl
                 vc.userPhone = self?.userModel?.MobileNumber
                 vc.userType = self?.userModel?.UserIdentity
+                if (self?.userModel?.RemarkName == nil || self?.userModel?.RemarkName?.count == 0) && (self?.userModel?.RemarkCompany == nil || self?.userModel?.RemarkCompany?.count == 0){
+                    vc.userRemarkName = ""
+                }else{
+                    vc.userRemarkName = String(format: "%@ %@", arguments: [self?.userModel?.RemarkCompany ?? "",self?.userModel?.RemarkName ?? ""])
+                }
+                vc.endBlock = {  text in
+                    let deleteClientId = "user/" + text
+                    RealmChatTool.deleteChatListData(with: deleteClientId)
+                }
                 self?.navigationController?.pushViewController(vc, animated: true)
             }).disposed(by: disposeBag)
             return cell

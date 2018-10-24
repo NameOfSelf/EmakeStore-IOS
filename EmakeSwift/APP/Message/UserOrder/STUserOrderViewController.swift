@@ -12,8 +12,6 @@ import MJRefresh
 import RxCocoa
 import RxSwift
 class STUserOrderViewController: BaseViewController {
-    var selctionList : HTHorizontalSelectionList?
-    let titles = ["全部","待签订","待付款","生产中","生产完成","已发货"]
     var table : UITableView?
     var selectIndex : NSInteger? = 0
     var pageNumber : NSInteger? = 1
@@ -22,6 +20,8 @@ class STUserOrderViewController: BaseViewController {
     let viewModel = STOrderListViewModel()
     let disposeBag = DisposeBag()
     var orderDataList : [STOrderModel]? = []
+    typealias SendProtocolBlock = (MessageBodyModel?) -> Void
+    var sendBlock : SendProtocolBlock?
     static let OrderTopCell = "OrderTopCell"
     static let OrderItemCell = "OrderItemCell"
     static let OrderBottomCell = "OrderBottomCell"
@@ -106,23 +106,6 @@ class STUserOrderViewController: BaseViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func goChatVC(orderModel:STOrderModel) {
-        
-        let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
-        let topic = "chatroom/" + storeId + "/" + (orderModel.UserId)!
-        MQTTClientDefault.shared().subcribeTo(topic: topic)
-        let storyboard = UIStoryboard.init(name: "Chat", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "Chat") as! STChatViewController
-        vc.userId = orderModel.UserId
-        if orderModel.RealName == nil {
-            vc.userName = "用户" + (orderModel.MobileNumber![(orderModel.MobileNumber?.count)!-4..<(orderModel.MobileNumber?.count)!])
-        }else{
-            vc.userName = orderModel.RealName
-        }
-        vc.userAvatar = orderModel.HeadImageUrl
-        vc.userPhone = orderModel.MobileNumber
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -169,7 +152,7 @@ extension STUserOrderViewController : UITableViewDelegate,UITableViewDataSource 
         }else if orderModel.OrderState == "2"{
             orderType = .生产完成
         }else if orderModel.OrderState == "3"{
-            orderType = .已发货
+            orderType = .发货中
         }else if orderModel.OrderState == "-2"{
             orderType = .待签订
         }
@@ -269,8 +252,11 @@ extension STUserOrderViewController : UITableViewDelegate,UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let orderModel = self.orderDataList![indexPath.section]
-        let vc = STOrderDetailViewController()
-        vc.orderModel = orderModel
+        let vc = STMessaegOrderDetailViewController()
+        vc.orderNo = orderModel.ContractNo
+        vc.sendBlock = { [weak self] model in
+            self?.sendBlock!(model)
+        }
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

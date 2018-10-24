@@ -14,8 +14,8 @@ class IMUIOptionCollectionViewCell: UICollectionViewCell , IMUINewFeatureCellPro
     var featureDelegate: IMUINewFeatureViewDelegate?
     @IBOutlet weak var functionCollectionView: UICollectionView!
     var isOffcial : Bool = false
-    let optionArray = ["快捷回复","相册","拍照","买家订单","商品推荐","咨询转移","结束对话"]
-    let optionImageArray = ["icon_chat_reply","icon_image","icon_photograph","icon_ Orders","icon_commodity_recommendation","呼叫转移","结束"]
+    let optionArray = ["快捷回复","相册","拍照","买家订单","商品推荐","团购推荐","咨询转移","结束对话"]
+    let optionImageArray = ["icon_chat_reply","icon_image","icon_photograph","icon_ Orders","icon_commodity_recommendation","tuangoutuijian","呼叫转移","结束"]
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -37,7 +37,7 @@ extension IMUIOptionCollectionViewCell: UICollectionViewDataSource, UICollection
         if self.isOffcial {
             return 3
         }
-        return 7
+        return 8
     }
     
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -83,8 +83,10 @@ extension IMUIOptionCollectionViewCell: UICollectionViewDataSource, UICollection
         case 4:
             self.featureDelegate?.didSelectedProfuct()
         case 5:
-            self.featureDelegate?.didSelectedServerSwitch()
+            self.featureDelegate?.didSelectedGroupPurchase()
         case 6:
+            self.featureDelegate?.didSelectedServerSwitch()
+        case 7:
             self.featureDelegate?.didSelectedEndServers()
         default:
             break

@@ -33,9 +33,13 @@ class STOrderModel: Mappable {
     var ShippingInfo : [ShippingInfoModel]?
     var StoreId : String?
     var StoreName : String?
+    var SuperGroupDetailId : String?
     var StoreOwner : StoreOwnerModel?
     var StorePhoto : String?
     var UserId : String?
+    var UserIdentity : String?
+    var RemarkCompany : String?
+    var RemarkName : String?
     required init?(map: Map) {
         
     }
@@ -67,6 +71,10 @@ class STOrderModel: Mappable {
         StoreOwner <- map["StoreOwner"]
         StorePhoto <- map["StorePhoto"]
         UserId <- map["UserId"]
+        SuperGroupDetailId <- map["SuperGroupDetailId"]
+        UserIdentity <- map["UserIdentity"]
+        RemarkCompany <- map["RemarkCompany"]
+        RemarkName <- map["RemarkName"]
     }
 }
 class AddressModel: Mappable {

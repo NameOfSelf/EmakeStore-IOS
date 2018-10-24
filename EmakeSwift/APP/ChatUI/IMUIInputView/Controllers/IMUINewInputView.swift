@@ -188,6 +188,11 @@ extension IMUINewInputView: UITextViewDelegate {
     
 }
 extension IMUINewInputView: IMUINewFeatureViewDelegate {
+    public func didSelectedGroupPurchase() {
+        print("didSelectGroupPurchase")
+        self.inputViewDelegate?.didSelectGroupPurchase?()
+    }
+    
     public func didSelectedServerSwitch() {
         print("didSelectedServerSwitch")
         self.inputViewDelegate?.didSelectSwitchServers?()
@@ -197,6 +202,8 @@ extension IMUINewInputView: IMUINewFeatureViewDelegate {
         print("didSelectedEndServers")
         self.inputViewDelegate?.didSelectEndServers?()
     }
+    
+    
     
     public func didSelectedOrder() {
         print("didSelectedOrder")

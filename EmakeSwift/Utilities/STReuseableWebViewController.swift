@@ -12,6 +12,8 @@ enum WebViewType : String{
     case instruction = "使用说明"
     case contractPreview = "预览合同"
     case protocolPreview = "技术协议"
+    case saleContract = "买卖合同"
+    case totalContract = "完整合同"
 }
 class STReuseableWebViewController: BaseViewController {
     
@@ -43,6 +45,10 @@ class STReuseableWebViewController: BaseViewController {
         case .contractPreview?:
             self.title = webViewType?.rawValue
         case .protocolPreview?:
+            self.title = webViewType?.rawValue
+        case .saleContract?:
+            self.title = webViewType?.rawValue
+        case .totalContract?:
             self.title = webViewType?.rawValue
         default:
             self.title = ""

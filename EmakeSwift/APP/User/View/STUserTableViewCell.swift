@@ -125,10 +125,14 @@ class STUserTableViewCell: UITableViewCell {
             self.identityImage?.isHidden = false
         }
         
-        if model.RealName == nil || model.RealName?.count == 0{
-            self.nameLabel?.text = "用户" + model.MobileNumber![(model.MobileNumber?.count)!-4..<(model.MobileNumber?.count)!]
+        if model.NickName == nil || model.NickName?.count == 0{
+            if model.RealName == nil || model.RealName?.count == 0{
+                self.nameLabel?.text = "用户" + model.MobileNumber![(model.MobileNumber?.count)!-4..<(model.MobileNumber?.count)!]
+            }else{
+                self.nameLabel?.text = model.RealName
+            }
         }else{
-            self.nameLabel?.text = model.RealName
+            self.nameLabel?.text = model.NickName
         }
         if isVip {
             let part = model.EndAt?.components(separatedBy: " ")

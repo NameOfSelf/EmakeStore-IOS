@@ -45,7 +45,7 @@ class MyMessageModel: IMUIMessageModel {
         
         let myLayout = MyMessageCellLayout(isOutGoingMessage: isOutGoing,
                                            isNeedShowTime: isNeedShowTime,
-                                           bubbleContentSize: CGSize(width: WidthRate(actureValue: 233), height: HeightRate(actureValue: 74)),
+                                           bubbleContentSize: CGSize(width: 233, height: 74),
                                            bubbleContentInsets: UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 15),
                                            timeLabelContentSize: CGSize(width: 200, height: 20),
                                            type: "File")

@@ -47,6 +47,7 @@ class STOrderDetailViewController: BaseViewController {
     }
     
     func lookUpProtocol(contractNo:String,index:NSInteger) {
+        
         let parameter : NSDictionary? = ["ContractNo":contractNo]
         viewModel.getContractAgreement(self, parameters: parameter!) { (model) in
             let contract = model as! ContractModel
@@ -113,7 +114,7 @@ extension STOrderDetailViewController : UITableViewDelegate,UITableViewDataSourc
         }else if self.orderModel?.OrderState == "2"{
             orderType = .生产完成
         }else if self.orderModel?.OrderState == "3"{
-            orderType = .已发货
+            orderType = .发货中
         }else if self.orderModel?.OrderState == "-2"{
             orderType = .待签订
         }
@@ -159,6 +160,16 @@ extension STOrderDetailViewController : UITableViewDelegate,UITableViewDataSourc
                 }
                 vc.userAvatar = self?.orderModel?.HeadImageUrl
                 vc.userPhone = self?.orderModel?.MobileNumber
+                vc.userType = self?.orderModel?.UserIdentity
+                if (self?.orderModel?.RemarkName == nil ||  self?.orderModel?.RemarkName?.count == 0) && (self?.orderModel?.RemarkCompany == nil ||  self?.orderModel?.RemarkCompany?.count == 0){
+                    vc.userRemarkName = ""
+                }else{
+                    vc.userRemarkName = String(format: "%@ %@", arguments: [self?.orderModel?.RemarkCompany ?? "",self?.orderModel?.RemarkName ?? ""])
+                }
+                vc.endBlock = {  text in
+                    let deleteClientId = "user/" + text
+                    RealmChatTool.deleteChatListData(with: deleteClientId)
+                }
                 self?.navigationController?.pushViewController(vc, animated: true)
             }).disposed(by: disposeBag)
             return cell
@@ -187,6 +198,16 @@ extension STOrderDetailViewController : UITableViewDelegate,UITableViewDataSourc
                 }
                 vc.userAvatar = self?.orderModel?.HeadImageUrl
                 vc.userPhone = self?.orderModel?.MobileNumber
+                vc.userType = self?.orderModel?.UserIdentity
+                if (self?.orderModel?.RemarkName == nil ||  self?.orderModel?.RemarkName?.count == 0) && (self?.orderModel?.RemarkCompany == nil ||  self?.orderModel?.RemarkCompany?.count == 0){
+                    vc.userRemarkName = ""
+                }else{
+                    vc.userRemarkName = String(format: "%@ %@", arguments: [self?.orderModel?.RemarkCompany ?? "",self?.orderModel?.RemarkName ?? ""])
+                }
+                vc.endBlock = {  text in
+                    let deleteClientId = "user/" + text
+                    RealmChatTool.deleteChatListData(with: deleteClientId)
+                }
                 self?.navigationController?.pushViewController(vc, animated: true)
             }).disposed(by: disposeBag)
             return cell
@@ -210,7 +231,7 @@ extension STOrderDetailViewController : UITableViewDelegate,UITableViewDataSourc
         
         switch indexPath.section {
         case 0:
-            if self.orderModel?.Address == nil{
+            if self.orderModel?.Address == nil || self.orderModel?.Address?.count == 0{
                 return HeightRate(actureValue: 113)
             }else{
                 return HeightRate(actureValue: 186)

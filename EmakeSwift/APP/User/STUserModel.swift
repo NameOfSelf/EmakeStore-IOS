@@ -22,6 +22,8 @@ class STUserModel: Mappable {
     var TotalQuantity : Int?
     var CreateTime : String?
     var EndAt : String?
+    var RemarkCompany : String?
+    var RemarkName : String?
     required init?(map: Map) {
         
     }
@@ -40,6 +42,8 @@ class STUserModel: Mappable {
         TotalOrders <- map["TotalOrders"]
         CreateTime <- map["CreateTime"]
         EndAt <- map["EndAt"]
+        RemarkCompany <- map["RemarkCompany"]
+        RemarkName <- map["RemarkName"]
     }
 }
 

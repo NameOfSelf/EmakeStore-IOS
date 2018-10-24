@@ -43,7 +43,6 @@ class MessageEventCollectionViewCell: UICollectionViewCell {
             make.centerX.equalTo(self.contentView.snp.centerX)
         })
         
-        
         self.backView = UIView()
         self.backView?.backgroundColor = .white
         self.backView?.layer.borderWidth = WidthRate(actureValue: 2)
@@ -57,7 +56,7 @@ class MessageEventCollectionViewCell: UICollectionViewCell {
             make.top.equalTo(HeightRate(actureValue: 30))
             make.centerX.equalTo(self.contentView.snp.centerX)
             make.bottom.equalTo(0)
-            make.width.equalTo(ScreenWidth)
+            make.width.equalTo(ScreenWidth-WidthRate(actureValue: 20))
         })
         
         self.title = UILabel()
@@ -192,5 +191,5 @@ class MessageEventCollectionViewCell: UICollectionViewCell {
 protocol MessageEventCellDelegate : NSObjectProtocol{
     
     func didTapMessageBubbleWithModel(eventText:String)
-
+    
 }

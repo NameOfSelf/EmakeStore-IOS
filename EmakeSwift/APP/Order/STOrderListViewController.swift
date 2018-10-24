@@ -15,7 +15,7 @@ import Toast
 class STOrderListViewController: BaseViewController {
     
     var selctionList : HTHorizontalSelectionList?
-    let titles = ["全部","待签订","待付款","生产中","生产完成","已发货"]
+    let titles = ["全部","待签订","待付款","生产中","生产完成","发货中","已完成"]
     var table : UITableView?
     var selectIndex : NSInteger? = 0
     var pageNumber : NSInteger? = 1
@@ -34,8 +34,14 @@ class STOrderListViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "订单"
-        self.baseSetNavRightButtonWithImage("yizhizaokefu")
+        self.baseSetNavRightButtonWithImage("icon_service")
+        NotificationCenter.default.addObserver(self, selector: #selector(loginOrderRefresh), name: NSNotification.Name(rawValue: NotificationLoginRefresh), object: nil)
         // Do any additional setup after loading the view.
+    }
+    
+    @objc func loginOrderRefresh() {
+        
+        self.table?.mj_header.beginRefreshing()
     }
     
     
@@ -45,11 +51,7 @@ class STOrderListViewController: BaseViewController {
         let vc = storyboard.instantiateViewController(withIdentifier: "Chat") as! STChatViewController
         let serverID = UserDefaults.standard.object(forKey: EmakeUserServiceID) as! String
         vc.userId = serverID
-        if UserDefaults.standard.object(forKey: EmakeUserNickName) != nil {
-            vc.userName = UserDefaults.standard.object(forKey: EmakeUserNickName) as? String
-        }else{
-            vc.userName = ""
-        }
+        vc.userName = serverID
         if UserDefaults.standard.object(forKey: EmakeHeadImageUrlString) != nil {
             vc.userAvatar = UserDefaults.standard.object(forKey: EmakeHeadImageUrlString) as? String
         }else{
@@ -61,6 +63,7 @@ class STOrderListViewController: BaseViewController {
             vc.userPhone = ""
         }
         vc.userType = ""
+        vc.userRemarkName = ""
         vc.isChatWithOffcial = true
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -129,6 +132,8 @@ class STOrderListViewController: BaseViewController {
             OrderState = "2"
         case 5:
             OrderState = "3"
+        case 6:
+            OrderState = "4"
         default:
             break
         }
@@ -168,6 +173,8 @@ class STOrderListViewController: BaseViewController {
             OrderState = "2"
         case 5:
             OrderState = "3"
+        case 6:
+            OrderState = "4"
         default:
             break
         }
@@ -205,7 +212,9 @@ class STOrderListViewController: BaseViewController {
     }
     
     func sendStoreServerList() {
-        
+        let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
+        let serverId = UserDefaults.standard.object(forKey: EmakeUserServiceID) as! String
+        let MQTT_CMDTopic = String(format: "customer/%@/%@", arguments: [storeId,serverId])
         let ServerListCMD = CommandModel.creatChatroomCustomerListCMD()
         MQTTClientDefault.shared().sendMessage(withMessage: ServerListCMD, topic: MQTT_CMDTopic) { (error) in
         }
@@ -227,6 +236,16 @@ class STOrderListViewController: BaseViewController {
         }
         vc.userAvatar = orderModel.HeadImageUrl
         vc.userPhone = orderModel.MobileNumber
+        vc.userType = orderModel.UserIdentity
+        if (orderModel.RemarkName == nil ||  orderModel.RemarkName?.count == 0) && (orderModel.RemarkCompany == nil ||  orderModel.RemarkCompany?.count == 0){
+            vc.userRemarkName = ""
+        }else{
+          vc.userRemarkName = String(format: "%@ %@", arguments: [orderModel.RemarkCompany ?? "",orderModel.RemarkName ?? ""])
+        }
+        vc.endBlock = {  text in
+            let deleteClientId = "user/" + text
+            RealmChatTool.deleteChatListData(with: deleteClientId)
+        }
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -278,7 +297,8 @@ extension STOrderListViewController : UITableViewDelegate,UITableViewDataSource 
         if (orderModel.ProductList?.count)! >= 2 {
             return 4
         }else{
-            return 3
+            let count = (orderModel.ProductList?.count)! + 2
+            return count
         }
     }
     
@@ -293,7 +313,7 @@ extension STOrderListViewController : UITableViewDelegate,UITableViewDataSource 
         }else if orderModel.OrderState == "2"{
             orderType = .生产完成
         }else if orderModel.OrderState == "3"{
-            orderType = .已发货
+            orderType = .发货中
         }else if orderModel.OrderState == "-2"{
             orderType = .待签订
         }
@@ -334,10 +354,24 @@ extension STOrderListViewController : UITableViewDelegate,UITableViewDataSource 
                 return cell
             }
         default:
-            let cell = STOrderItemCell.init(style: .default, reuseIdentifier: STOrderListViewController.OrderItemCell)
-            cell.setData(model:orderModel.ProductList![indexPath.row-1])
-            cell.selectionStyle = .none
-            return cell
+            if (orderModel.ProductList?.count)! <= 0 {
+                let cell = STOrderBottomCell.init(style: .default, reuseIdentifier: STOrderListViewController.OrderBottomCell, orderType: orderType!)
+                let orderModel = self.orderDataList![indexPath.section]
+                cell.selectionStyle = .none
+                cell.setData(model:self.orderDataList![indexPath.section])
+                cell.lookUpContractButton?.rx.tap.subscribe(onNext: { [weak self] in
+                    self?.getContractPDF(contractNo: orderModel.ContractNo ?? "")
+                }).disposed(by: disposeBag)
+                cell.contractChatButton?.rx.tap.subscribe(onNext: { [weak self] in
+                    self?.goChatVC(orderModel: orderModel)
+                }).disposed(by: disposeBag)
+                return cell
+            }else{
+                let cell = STOrderItemCell.init(style: .default, reuseIdentifier: STOrderListViewController.OrderItemCell)
+                cell.setData(model:orderModel.ProductList![indexPath.row-1])
+                cell.selectionStyle = .none
+                return cell
+            }
         }
     }
     
@@ -346,16 +380,27 @@ extension STOrderListViewController : UITableViewDelegate,UITableViewDataSource 
         case 0:
             return HeightRate(actureValue: 28)
         case 1:
+        
             let orderModel = self.orderDataList![indexPath.section]
-            let productModel = orderModel.ProductList![indexPath.row-1]
-            let textMaxSize = CGSize(width: WidthRate(actureValue: 180), height: CGFloat(MAXFLOAT))
-            let width = productModel.GoodsExplain?.boundingRect(with:textMaxSize , options: [.usesLineFragmentOrigin], attributes: [NSAttributedStringKey.font : AdaptFont(actureValue: 13)], context: nil).size
-            let height = (width?.height)!+HeightRate(actureValue: 50)
-            if height > HeightRate(actureValue: 111){
-                return height
+            if (orderModel.ProductList?.count)! > 0{
+                let productModel = orderModel.ProductList![indexPath.row-1]
+                let textMaxSize = CGSize(width: WidthRate(actureValue: 180), height: CGFloat(MAXFLOAT))
+                let width = productModel.GoodsExplain?.boundingRect(with:textMaxSize , options: [.usesLineFragmentOrigin], attributes: [NSAttributedStringKey.font : AdaptFont(actureValue: 13)], context: nil).size
+                let height = (width?.height)!+HeightRate(actureValue: 50)
+                if height > HeightRate(actureValue: 111){
+                    return height
+                }else{
+                    return HeightRate(actureValue: 111)
+                }
             }else{
-                return HeightRate(actureValue: 111)
+                let orderModel = self.orderDataList![indexPath.section]
+                if orderModel.OrderState == "-2"{
+                    return HeightRate(actureValue: 93)
+                }else{
+                    return HeightRate(actureValue: 128)
+                }
             }
+            
         case 2:
             let orderModel = self.orderDataList![indexPath.section]
             if (orderModel.ProductList?.count)! >= 2 {

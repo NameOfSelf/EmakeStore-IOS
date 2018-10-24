@@ -15,7 +15,7 @@ class RealmChatTool: Object {
         
         let docPath = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0] as String
         let serverId = UserDefaults.standard.object(forKey: EmakeUserServiceID) as! String
-        let fileName = String(format: "/ChatListDB_%@.realm", arguments: [serverId])
+        let fileName = String(format: "/ChatList_%@.realm", arguments: [serverId])
         let dbPath = docPath.appending(fileName)
         /// 传入路径会自动创建数据库
         let defaultRealm = try! Realm(fileURL: URL.init(string: dbPath)!)

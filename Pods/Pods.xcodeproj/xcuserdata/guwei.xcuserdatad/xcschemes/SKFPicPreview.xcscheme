@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "504DC2DE0CF59FFF4577EDF3E9BBE335"
+               BlueprintIdentifier = "23E4293A7786C3BDDBFD90CE24EB239D"
                BlueprintName = "SKFPicPreview"
                ReferencedContainer = "container:Pods.xcodeproj"
                BuildableName = "SKFPicPreview.framework">

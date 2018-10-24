@@ -59,6 +59,7 @@ class CommandModel: Mappable {
         commmadModel.message_id_last = mesageId
         commmadModel.customer_id = ""
         commmadModel.chatroom_id = String(format: "%@/%@", arguments: [storeId,userId])
+        commmadModel.user_info = ""
         let json = commmadModel.toJSON()
         return json
     }
@@ -67,8 +68,10 @@ class CommandModel: Mappable {
         let commmadModel = CommandModel()
         commmadModel.cmd = "StoreCustomerList"
         commmadModel.user_id = ""
-        commmadModel.message_id_last = 0;
-        commmadModel.customer_id = "";
+        commmadModel.message_id_last = 0
+        commmadModel.customer_id = ""
+        commmadModel.user_info = ""
+        commmadModel.chatroom_id = ""
         let json = commmadModel.toJSON()
         return json
     }
@@ -77,7 +80,7 @@ class CommandModel: Mappable {
         let commmadModel = CommandModel()
         commmadModel.cmd = "RequestSwitchService"
         commmadModel.user_id = userId;
-        commmadModel.message_id_last = 0;
+        commmadModel.message_id_last = 0
         let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
         commmadModel.customer_id = String(format: "customer/%@/%@", arguments: [storeId,switchServerId])
         commmadModel.chatroom_id = String(format: "%@/%@", arguments: [storeId,userId])
@@ -89,9 +92,14 @@ class CommandModel: Mappable {
     class func creatChatroomCustomerListCMD() -> [String:Any]{
         let commmadModel = CommandModel()
         commmadModel.cmd = "ChatroomCustomerList"
+        let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
+        let serverId = UserDefaults.standard.object(forKey: EmakeUserServiceID) as! String
+        let MQTT_ServerChatRoomID = String(format: "%@/%@", arguments: [storeId,serverId])
         commmadModel.chatroom_id = MQTT_ServerChatRoomID
         commmadModel.user_id = ""
         commmadModel.message_id_last = 0
+        commmadModel.user_info = ""
+        commmadModel.customer_id = ""
         let json = commmadModel.toJSON()
         return json
     }
@@ -99,8 +107,10 @@ class CommandModel: Mappable {
     class func creatRequestServiceCMD() -> [String:Any]{
         let commmadModel = CommandModel()
         commmadModel.cmd = "RequestService"
+        let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
+        let serverId = UserDefaults.standard.object(forKey: EmakeUserServiceID) as! String
+        let MQTT_ServerChatRoomID = String(format: "%@/%@", arguments: [storeId,serverId])
         commmadModel.chatroom_id = MQTT_ServerChatRoomID
-        let serverId = UserDefaults.standard.object(forKey:EmakeUserServiceID) as! String
         commmadModel.user_id = serverId
         commmadModel.message_id_last = 0
         
@@ -112,11 +122,7 @@ class CommandModel: Mappable {
         let userId = UserDefaults.standard.object(forKey: EmakeUserId) as! String
         let userinfo = MessageFromModel()
         userinfo.Avatar = ""
-        if (UserDefaults.standard.object(forKey: EmakeUserNickName) != nil) {
-            userinfo.DisplayName = UserDefaults.standard.object(forKey: EmakeUserNickName) as? String
-        }else{
-            userinfo.DisplayName = ""
-        }
+        userinfo.DisplayName = serverId
         if (UserDefaults.standard.object(forKey: EmakeUserPhoneNumber) != nil) {
             userinfo.PhoneNumber = UserDefaults.standard.object(forKey: EmakeUserPhoneNumber) as? String
         }else{
@@ -127,6 +133,7 @@ class CommandModel: Mappable {
         }else{
             userinfo.Avatar = ""
         }
+        let MQTTClienID = String(format: "customer/%@/%@", arguments: [storeId,serverId])
         userinfo.ClientID = MQTTClienID
         userinfo.UserType = ""
         userinfo.UserId = userId
@@ -136,6 +143,7 @@ class CommandModel: Mappable {
         let data = try? JSONSerialization.data(withJSONObject: userinfoArray, options: .prettyPrinted)
         let jsonStr = String(data: data!, encoding: String.Encoding.utf8)
         commmadModel.user_info = jsonStr
+        commmadModel.customer_id = ""
         let json = commmadModel.toJSON()
         return json
     }
@@ -145,7 +153,25 @@ class CommandModel: Mappable {
         commmadModel.cmd = "StoreServiceUserList"
         commmadModel.user_id = ""
         commmadModel.message_id_last = 0
+        commmadModel.user_info = ""
+        commmadModel.customer_id = ""
+        commmadModel.chatroom_id = ""
         let json = commmadModel.toJSON()
         return json
     }
+    
+    class func creatCustomerAcceptService(userId:String) -> [String:Any] {
+        let commmadModel = CommandModel()
+        commmadModel.cmd = "CustomerAcceptService"
+        commmadModel.user_id = userId
+        let storeId = UserDefaults.standard.object(forKey: EmakeStoreId) as! String
+        let serverId = UserDefaults.standard.object(forKey: EmakeUserServiceID) as! String
+        commmadModel.chatroom_id = String(format: "%@/%@", arguments: [storeId,userId])
+        commmadModel.customer_id = serverId
+        commmadModel.message_id_last = 0
+        commmadModel.user_info = ""
+        let json = commmadModel.toJSON()
+        return json
+    }
+    
 }

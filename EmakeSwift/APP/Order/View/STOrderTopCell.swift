@@ -13,6 +13,7 @@ class STOrderTopCell: UITableViewCell {
     var orderNoLabel : UILabel? 
     var orderStateLabel : UILabel?
     var taxLabel : UILabel?
+    var superGroupLabel : UILabel?
     var line : UILabel?
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         
@@ -43,8 +44,16 @@ class STOrderTopCell: UITableViewCell {
         self.taxLabel?.text = "含税"
         self.taxLabel?.textAlignment = .center
         self.taxLabel?.backgroundColor = TextColor_FFCC00
-        self.taxLabel?.font = AdaptFont(actureValue: 6)
+        self.taxLabel?.font = AdaptFont(actureValue: 8)
         self.contentView.addSubview(self.taxLabel!)
+        
+        self.superGroupLabel = UILabel()
+        self.superGroupLabel?.textColor = .white
+        self.superGroupLabel?.text = "超级团"
+        self.superGroupLabel?.textAlignment = .center
+        self.superGroupLabel?.backgroundColor = TextColor_F8695D
+        self.superGroupLabel?.font = AdaptFont(actureValue: 8)
+        self.contentView.addSubview(self.superGroupLabel!)
         
         self.line = UILabel()
         self.line?.backgroundColor = BaseColor.SepratorLineColor
@@ -62,8 +71,15 @@ class STOrderTopCell: UITableViewCell {
         self.taxLabel?.snp.makeConstraints({ (make) in
             make.left.equalTo((self.orderNoLabel?.snp.right)!).offset(WidthRate(actureValue: 2))
             make.centerY.equalTo(self.contentView.snp.centerY)
-            make.height.equalTo(HeightRate(actureValue: 12))
-            make.width.equalTo(WidthRate(actureValue: 22))
+            make.height.equalTo(HeightRate(actureValue: 14))
+            make.width.equalTo(WidthRate(actureValue: 26))
+        })
+        
+        self.superGroupLabel?.snp.makeConstraints({ (make) in
+            make.left.equalTo((self.taxLabel?.snp.right)!).offset(WidthRate(actureValue: 5))
+            make.centerY.equalTo(self.contentView.snp.centerY)
+            make.height.equalTo(HeightRate(actureValue: 14))
+            make.width.equalTo(WidthRate(actureValue: 30))
         })
         
         self.orderStateLabel?.snp.makeConstraints({ (make) in
@@ -89,7 +105,7 @@ class STOrderTopCell: UITableViewCell {
         }else if model.OrderState == "2"{
             self.orderStateLabel?.text = "生产完成"
         }else if model.OrderState == "3"{
-            self.orderStateLabel?.text = "已发货"
+            self.orderStateLabel?.text = "发货中"
         }else if model.OrderState == "-2"{
             self.orderStateLabel?.text = "待签订"
         }
@@ -97,6 +113,11 @@ class STOrderTopCell: UITableViewCell {
             self.taxLabel?.isHidden = false
         }else{
             self.taxLabel?.isHidden = true
+        }
+        if model.SuperGroupDetailId == nil || model.SuperGroupDetailId?.count == 0{
+            self.superGroupLabel?.isHidden = true
+        }else{
+            self.superGroupLabel?.isHidden = false
         }
     }
     
